@@ -6,7 +6,7 @@ from django.db import models
 
 
 class Cliente(models.Model):
-    id = models.AutoField("ID",primary_key=True,max_length=4,blank=False,null=False)
+    id = models.AutoField("ID",primary_key=True,blank=False,null=False)
     nombre = models.CharField("Nombre",max_length=60, blank=False, null=False)
     apellidos = models.CharField("Apellidos",max_length=100, blank=True, null=False)
     direccion = models.CharField("Direccion",max_length=100, blank=True, null=False)
@@ -23,7 +23,7 @@ class Aparato(models.Model):
         ('generico', 'Generico'),
         ('comercial', 'Comercial'),
     )
-    id = models.AutoField(primary_key=True,max_length=5)
+    id = models.AutoField(primary_key=True)
     tipo = models.CharField(choices=TIPO, max_length=30)
     nombre = models.CharField(max_length=200, unique=True)
     fecha_expiracion = models.DateField()
