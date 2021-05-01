@@ -1,8 +1,8 @@
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django import forms
 from django.contrib.auth.models import User
-from appWeb import api
-from appWeb.models import Servidor
+from electronica import api
+from electronica.models import Aparato
 
 
 class FormularioLogin(AuthenticationForm):
@@ -133,45 +133,35 @@ class AdminForm(forms.ModelForm):
 
 class ServerForm(forms.ModelForm):
     class Meta:
-        model = Servidor
-        fields = ('desc_srv', 'ip_srv', 'puerto', 'usr', 'estado', 'puerto_tty')
+        model = Aparato
+        fields = ('tipo', 'nombre', 'fecha_expiracion', 'fecha_produccion', 'descripcion', 'precio_venta', 'stock')
         label = {
-            'desc_srv': 'Descrićión del servidor',
-            'ip_srv': 'IP del servidor',
-            'puerto': 'Puerto del servidor',
-            'usr': 'Administrador del servidor',
-            'estado': 'Estado del servidor',
-            'puerto_tty': 'Puerto Terminal',
+            'tipo': 'Tipo de aparato',
+            'nombre': 'Nombre de aparato',
+            'fecha_expiracion': 'Fecha de fecha_expiracion del aparato',
+            'fecha_produccion': 'Fecha de produccion del aparato',
+            'descripcion': 'Descripcion del aparato',
+            'precio_venta': 'Precio de venta',
+            'stock': 'Stock en el almacen',
         }
         widgets = {
-            'desc_srv': forms.TextInput(
-                attrs={
-                    'class': 'form-control',
-                    'placeholder': 'Pequeña descripcion',
-                }
+            'descripcion': forms.Textarea(
+                attrs={'class': 'form-control', 'rows': '6', 'placeholder': 'Pequeña Descripcion'}
             ),
-            'ip_srv': forms.TextInput(
-                attrs={
-                    'class': 'form-control',
-                    'placeholder': 'IP del servidor',
-                }
+            'precio_Compra': forms.NumberInput(
+                attrs={'class': 'form-control', 'placeholder': 'Precio de Compra'}
             ),
-            'puerto': forms.TextInput(
-                attrs={
-                    'class': 'form-control',
-                    'placeholder': 'Puerto del servidor',
-                }
+            'precio_venta': forms.NumberInput(
+                attrs={'class': 'form-control', 'id': 'valor3', 'placeholder': 'Precio de Venta'}
             ),
-            'puerto_tty': forms.TextInput(
-                attrs={
-                    'class': 'form-control',
-                    'placeholder': 'Puerto de la terminal del servidor',
-                }
+            'presentacion': forms.Select(
+                attrs={'class': 'form-control'}
             ),
-            'usr': forms.Select(
-                attrs={
-                    'class': 'form-control',
-                }
+            'tipo': forms.Select(
+                attrs={'class': 'form-control'}
             ),
-            'estado': forms.CheckboxInput(),
+            'fecha_expiracion': forms.DateInput(
+                attrs={'class': 'form-control', 'id': 'Date', 'data-date-format': 'dd/mm/yyyy'}),
+            'fecha_produccion': forms.DateInput(
+                attrs={'class': 'form-control', 'id': 'Date1', 'data-date-format': 'dd/mm/yyyy'}),
         }

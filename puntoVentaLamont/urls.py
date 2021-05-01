@@ -15,7 +15,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from electronica import views
+from django.contrib.auth.decorators import login_required
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('global/', include(('appWeb.urls','global'))),
+    path('login/', views.login, name='login'),
+    path('', login_required(views.home,login_url='login'), name='home'), # el login es por que si no redirije a accounts/login que es de django
+    path('registro/',views.signup, name='signup'),
+    path('logout/', views.logout, name='logout'),
+    path('monitor/<str:pk>/',login_required(views.monitoreo, login_url='login'), name='monitor')
 ]

@@ -1,10 +1,7 @@
 import json
-
-import requests
 from django.contrib.auth.hashers import check_password, make_password
 import socket
 
-from adminServer import settings
 
 
 def validar_password(pwd_enviada, pwd_bd):
@@ -42,16 +39,3 @@ def obtener_disco(datos_servidor):
     return float(dic.get('disco'))
 
 
-def solicitar_datos_srv(servidor):
-    print(servidor.puerto)
-    url_srv = settings.PROTOCOLO_MONITOR+'://'+servidor.ip_srv+':'+ servidor.puerto
-    print(url_srv)
-    try:
-        solicitud = requests.get(url_srv+'/datos_monitor/')
-        print(solicitud.status_code)
-        if solicitud.status_code != 200:
-            raise ConeccionSrvMonitor('Error al tomar información de el servidor: ' + str(solicitud.status_code))
-        datos_servidor = solicitud.json()
-        return datos_servidor
-    except ConeccionSrvMonitor as error:
-        print(error)

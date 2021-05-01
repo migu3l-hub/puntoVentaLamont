@@ -4,7 +4,7 @@ from django.urls import reverse_lazy
 from django.contrib.auth.models import User
 from axes.decorators import axes_dispatch
 from . import decorators
-from .forms import FormularioLogin, Registro, ServerForm, AdminForm
+from .forms import FormularioLogin, ServerForm, AdminForm
 from django.views.generic import ListView, UpdateView, CreateView, DeleteView
 from .models import Aparato
 
@@ -22,7 +22,7 @@ def login(request):
         if user is not None:
             try:
                 do_login(request, user)
-                return redirect('home')
+                return redirect('global:index')
             except Exception:
                 return render(request, 'login.html', {"form": FormularioLogin, "errores": "Error al iniciar sesión"})
         else:
@@ -30,19 +30,6 @@ def login(request):
                           {"form": FormularioLogin, "errores": "Usuario y/o contraseña inválidos."})
     elif request.method == "GET":
         return render(request, "login.html", {"form": FormularioLogin})
-
-
-def signup(request):
-    if request.method == 'POST':
-        form = Registro(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('login')
-        else:
-            return render(request, 'registrarce.html', {"form": Registro, "errores": form.errors})
-    else:
-        form = Registro()
-    return render(request, 'registrarce.html', {'form': form})
 
 
 def logout(request):
@@ -83,56 +70,56 @@ def inicio(request):
 
 
 @decorators.class_view_decorator(decorators.no_es_admin)
-class ListarAdministrador(ListView):
+class ListarCliente(ListView):
     model = User
-    template_name = 'global/listar_admin.html'
+    template_name = 'global/listar_cliente.html'
     context_object_name = 'admins'
     queryset = User.objects.filter(is_superuser=False)
 
 
 @decorators.class_view_decorator(decorators.no_es_admin)
-class ActualizarAdministrador(UpdateView):
+class ActualizarCliente(UpdateView):
     model = User
     form_class = AdminForm
-    template_name = 'global/crear_admin.html'
+    template_name = 'global/crear_cliente.html'
     success_url = reverse_lazy('global:listar_admin')
 
 
 @decorators.class_view_decorator(decorators.no_es_admin)
-class CrearAdministrador(CreateView):
+class CrearCliente(CreateView):
     model = User
     form_class = AdminForm
-    template_name = 'global/crear_admin.html'
+    template_name = 'global/crear_cliente.html'
     success_url = reverse_lazy('global:listar_admin')
 
 
 @decorators.class_view_decorator(decorators.no_es_admin)
-class EliminarAdministrador(DeleteView):
+class EliminarCliente(DeleteView):
     model = User
     success_url = reverse_lazy('global:listar_admin')
 
 
 @decorators.class_view_decorator(decorators.no_es_admin)
-class CrearServer(CreateView):
+class CrearAparato(CreateView):
     model = Aparato
     form_class = ServerForm
-    template_name = 'global/crear_server.html'
+    template_name = 'global/crear_aparato.html'
     success_url = reverse_lazy('global:listar_server')
 
 
 @decorators.class_view_decorator(decorators.no_es_admin)
-class ListarServidor(ListView):  # MML esta incompleto
+class ListarAparato(ListView):  # MML esta incompleto
     model = Aparato
-    template_name = 'global/listar_server.html'
+    template_name = 'global/listar_aparato.html'
     context_object_name = 'servers'
     queryset = Aparato.objects.all()
 
 
 @decorators.class_view_decorator(decorators.no_es_admin)
-class ActualizarServidor(UpdateView):
+class ActualizarAparato(UpdateView):
     model = Aparato
     form_class = ServerForm
-    template_name = 'global/server.html'
+    template_name = 'global/aparato.html'
     success_url = reverse_lazy('global:listar_server')
 
     def get_context_data(self, **kwargs):
@@ -142,6 +129,6 @@ class ActualizarServidor(UpdateView):
 
 
 @decorators.class_view_decorator(decorators.no_es_admin)
-class EliminarServidor(DeleteView):
+class EliminarAparato(DeleteView):
     model = Aparato
     success_url = reverse_lazy('global:listar_server')

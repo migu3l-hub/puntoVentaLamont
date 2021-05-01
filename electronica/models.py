@@ -2,8 +2,6 @@ from django.db import models
 
 # Create your models here.
 
-#clientes
-
 
 class Cliente(models.Model):
     id = models.AutoField("ID",primary_key=True,blank=False,null=False)
@@ -14,8 +12,6 @@ class Cliente(models.Model):
 
     def __str__(self):
         return self.nombre
-
-#Aparatos
 
 
 class Aparato(models.Model):
