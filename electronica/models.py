@@ -7,8 +7,8 @@ class Cliente(models.Model):
     id = models.AutoField("ID",primary_key=True,blank=False,null=False)
     nombre = models.CharField("Nombre",max_length=60, blank=False, null=False)
     apellidos = models.CharField("Apellidos",max_length=100, blank=True, null=False)
-    direccion = models.CharField("Direccion",max_length=100, blank=True, null=False)
-    telefono = models.CharField("Telefono cliente",max_length=20, blank=True, null=False)
+    direccion = models.CharField("Direccion",max_length=100, blank=True, null=True)
+    telefono = models.CharField("Telefono cliente",max_length=20, blank=True, null=True)
 
     def __str__(self):
         return self.nombre

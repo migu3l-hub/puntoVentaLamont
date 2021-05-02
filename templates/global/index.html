@@ -31,17 +31,17 @@
                         <a href="{% url 'global:index' %}"><i class="menu-icon fa fa-laptop"></i>Inicio</a>
                     </li>
                     <li class="menu-item-has-children dropdown">
-                       <a href="" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-users"></i>Administradores</a>
+                       <a href="" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-users"></i>Clientes</a>
                        <ul class="sub-menu children dropdown-menu">
-                           <li><i class="fa fa-pencil"></i><a href="{% url 'global:crear_admin' %}">Registro de Administradores</a></li>
-                           <li><i class="fa fa-table"></i><a href="{% url 'global:listar_admin' %}">Listado de Administradores</a></li>
+                           <li><i class="fa fa-pencil"></i><a href="{% url 'global:crear_cliente' %}">Agregar un cliente</a></li>
+                           <li><i class="fa fa-table"></i><a href="{% url 'global:listar_cliente' %}">Lista de clientes</a></li>
                        </ul>
                     </li>
                     <li class="menu-item-has-children dropdown">
-                       <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-book"></i>Servidores</a>
+                       <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-cog"></i>Aparatos</a>
                        <ul class="sub-menu children dropdown-menu">
                            
-                           <li><i class="fa fa-table"></i><a href="{% url 'global:listar_server' %}">Listado de Servidores</a></li>
+                           <li><i class="fa fa-table"></i><a href="{% url 'global:listar_aparato' %}">Listado de Aparatos</a></li>
                        </ul>
                     </li>
                 </ul>
@@ -87,7 +87,7 @@
                                 <div class="card-body">
                                     <blockquote class="blockquote mb-0 text-light text-center">
                                         <h1 class="text-light">{{ user.username | upper }} BIENVENIDO AL PANEL DE ADMINISTRACION</h1>
-                                        <footer class="blockquote-footer text-light">"Panel para el administrador global" -<cite title="Neil Gaiman">Miguel Monroy - Gabriela Guevara</cite></footer>
+                                        <footer class="blockquote-footer text-light">"Electronica San Bruno" -<cite title="Neil Gaiman">Miguel Monroy - Gabriela Guevara</cite></footer>
                                     </blockquote>
                                 </div>
                             </div>
@@ -103,10 +103,10 @@
             <div class="footer-inner bg-white">
                 <div class="row">
                     <div class="col-sm-6">
-                        Copyright &copy; 2020 Miguel Monroy Lara & Gabriela Ivonne Guevara Rojas
+                        Copyright &copy; 2020 Miguel Monroy Lara & Pedro Monroy Lara
                     </div>
                     <div class="col-sm-6 text-right">
-                        Administracion de usuarios y servidores
+                        Punto de venta web
                     </div>
                 </div>
             </div>

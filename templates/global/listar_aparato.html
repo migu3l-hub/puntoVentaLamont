@@ -2,28 +2,28 @@
 {% load static %}
 
 {% block titulo %}
-Listado de Servidores
+Listado de Aparatos en venta
 {% endblock titulo %}
 
 {% block body %}
 <div>
-  <button class="btn btn-primary" type="button" onclick="abrir_modal_creacion('{% url 'global:crear_server' %}')">Crear Servidor</button>
+  <button class="btn btn-primary" type="button" onclick="abrir_modal_creacion('{% url 'global:crear_aparato' %}')">Crear Aparato</button>
 </div>
-{% if servers %}
+{% if aparatos %}
 <div class="card">
   <div class="card-header">
-    <strong class="card-title">Listado de Servidores</strong>
+    <strong class="card-title">Listado de Aparatos en venta</strong>
   </div>
   <div class="table-stats order-table ov-h">
     <table class="table">
       <thead>
         <tr>
-          <th>ID</th>
+            <th>ID</th>
+          <th>Tipo</th>
+          <th>Nombre</th>
           <th>Descripcion</th>
-          <th>IP</th>
-          <th>Puerto</th>
-          <th>Usuario ligado</th>
-          <th>Estado</th>
+          <th>Precio venta</th>
+          <th>stock</th>
           <th>Opciones</th>
         </tr>
       </thead>

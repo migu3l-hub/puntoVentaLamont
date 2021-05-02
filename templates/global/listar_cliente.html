@@ -6,34 +6,34 @@
 
 {% block body %}
 
-  {% if admins %}
+  {% if clientes %}
       <div class="card">
           <div class="card-header">
-              <strong class="card-title">Listado de Administradores</strong>
+              <strong class="card-title">Listado de Clientes</strong>
           </div>
           <div class="table-stats order-table ov-h">
               <table class="table">
                   <thead>
                       <tr>
-                        <th>Usuario</th>
+                        <th>ID</th>
                         <th>Nombre</th>
                         <th>Apellidos</th>
-                        <th>Correo</th>
-                        <th>Ultimo login</th>
+                        <th>Dirección</th>
+                        <th>Numero Telefonicó</th>
                         <th>Opciones</th>
                       </tr>
                   </thead>
                   <tbody>
-                    {% for admin in admins %}
+                    {% for cliente in clientes %}
                       <tr>
-                        <td>{{ admin.username }}</td>
-                        <td>{{ admin.first_name }}</td>
-                        <td>{{ admin.last_name }}</td>
-                        <td>{{ admin.email }}</td>
-                        <td>{{ admin.last_login }}</td>
+                        <td>{{ cliente.id }}</td>
+                        <td>{{ cliente.nombre }}</td>
+                        <td>{{ cliente.apellidos }}</td>
+                        <td>{{ cliente.direccion }}</td>
+                        <td>{{ cliente.telefono }}</td>
                         <td>
-                          <a href="{% url 'global:editar_admin' admin.id %}" class="btn btn-primary">Editar</a>
-                          <a href="{% url 'global:eliminar_admin' admin.id %}" class="btn btn-danger">Eliminar</a>
+                          <a href="{% url 'global:editar_cliente' cliente.id %}" class="btn btn-primary fa fa-pencil-square-o fa-2x" aria-hidden="true"></a>
+                          <a href="{% url 'global:eliminar_cliente' cliente.id %}" class="btn btn-danger fa fa-trash fa-2x" aria-hidden="true"></a>
                         </td>
                       </tr>
                     {% endfor %}

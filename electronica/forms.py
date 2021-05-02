@@ -1,137 +1,64 @@
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.contrib.auth.forms import AuthenticationForm
 from django import forms
-from django.contrib.auth.models import User
 from electronica import api
-from electronica.models import Aparato
+from electronica.models import Aparato, Cliente
 
 
 class FormularioLogin(AuthenticationForm):
     def __init__(self, *args, **kwargs):  # es el metodo que ejecuta toda clase de python lo redifinimos
         super(FormularioLogin, self).__init__(*args, **kwargs)
-        self.fields['username'].widget.attrs['class'] = 'form-control'
+        self.fields['username'].widget.attrs['class'] = 'input100'
         self.fields['username'].widget.attrs['placeholder'] = 'Nombre de usuario'
-        self.fields['password'].widget.attrs['class'] = 'form-control'
+        self.fields['username'].widget.attrs['type'] = 'text'
+        self.fields['password'].widget.attrs['class'] = 'input100'
         self.fields['password'].widget.attrs['placeholder'] = 'Contraseña'
 
 
-class Registro(UserCreationForm):
-    def __init__(self, *args, **kwargs):
-        super(Registro, self).__init__(*args, **kwargs)
-        self.fields['password1'].widget.attrs['class'] = "form-control"
-        self.fields['password1'].widget.attrs['placeholder'] = 'Contraseña'
-        self.fields['password2'].widget.attrs['class'] = "form-control"
-        self.fields['password2'].widget.attrs[
-            'placeholder'] = 'vuelva a introducir contraseña'  # MML el campo password solo se manipula desde aqui
+class ClienteForm(forms.ModelForm):
 
     class Meta:
-        model = User
-        fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2',)
-
-        widgets = {
-            'username': forms.TextInput(
-                attrs={
-                    'class': 'form-control',
-                    'placeholder': 'nombre de usuario',
-                }
-            ),
-            'first_name': forms.TextInput(
-                attrs={
-                    'class': 'form-control',
-                    'placeholder': 'nombre real',
-                }
-            ),
-            'last_name': forms.TextInput(
-                attrs={
-                    'class': 'form-control',
-                    'placeholder': 'apellido',
-                }
-            ),
-            'email': forms.EmailInput(
-                attrs={
-                    'class': 'form-control',
-                    'placeholder': 'correo electrónico',
-                }
-            ),
-        }
-
-
-class AdminForm(forms.ModelForm):
-    # MML verificacion de Contraseña
-    pwd2 = forms.CharField(label='Contraseña de confirmación', widget=forms.PasswordInput(
-        attrs={
-            'class': 'form-control',
-            'placeholder': 'Ingrese de nuevo la contraseña',
-            'id': 'pwd2',
-            'required': 'required',
-        }
-    ))
-
-    class Meta:
-        model = User
-        fields = ['username', 'password', 'first_name', 'last_name', 'email']
+        model = Cliente
+        fields = ['nombre', 'apellidos', 'direccion', 'telefono']
         labels = {
-            'username': 'Nombre de usuario',
-            'password': 'Contraseña del administrador',
-            'first_name': 'Nombre real del administrador',
-            'last_name': 'Apellidos del administrador',
-            'email': 'Correo del administrador',
+            'nombre': 'Nombre del cliente',
+            'apellidos': 'Apellidos del cliente',
+            'direccion': 'Direccion del cliente',
+            'telefono': 'Telefono del cliente',
         }
 
         widgets = {
-            'username': forms.TextInput(
+            'nombre': forms.TextInput(
                 attrs={
                     'class': 'form-control',
-                    'placeholder': 'Ingrese el nombre de usuario',
+                    'placeholder': 'Ingrese el nombre del cliente',
                     'id': 'usr'
                 }
             ),
-            'password': forms.PasswordInput(
+            'apellidos': forms.TextInput(
                 attrs={
                     'class': 'form-control',
-                    'placeholder': 'Ingrese la contraseña del administrador',
+                    'placeholder': 'Ingrese los apellidos del cliente',
                     'id': 'pwd'
                 }
             ),
-            'first_name': forms.TextInput(
+            'direccion': forms.TextInput(
                 attrs={
                     'class': 'form-control',
-                    'placeholder': 'Ingrese el nombre del administrador',
+                    'placeholder': 'Ingrese la direccion del cliente',
                     'id': 'nombres'
                 }
             ),
-            'last_name': forms.TextInput(
+            'telefono': forms.TextInput(
                 attrs={
                     'class': 'form-control',
-                    'placeholder': 'Ingrese los apellidos del administrador',
+                    'placeholder': 'Ingrese el telefono del cliente',
                     'id': 'apellidos'
-                }
-            ),
-            'email': forms.EmailInput(
-                attrs={
-                    'class': 'form-control',
-                    'placeholder': 'Ingrese el correo del administrador',
-                    'id': 'correo'
                 }
             ),
         }
 
-    def clean_pwd2(self):  # MML Hacemos la verificacion de si la contraeña coincide
-        pwd1 = self.cleaned_data['password']
-        pwd2 = self.cleaned_data['pwd2']
-        if pwd1 != pwd2:
-            raise forms.ValidationError('Las contraseñas no coinciden')  # Este es el error que esta en forms.error
-        return pwd2
 
-    def save(self, commit=True):
-        user = super().save(commit=False)  # MML se redefine la forma en que se guarda la contraseña
-        pwd_hash = api.hashear_contrasena(self.cleaned_data['password'])
-        user.password = pwd_hash
-        if commit:
-            user.save()
-        return user
-
-
-class ServerForm(forms.ModelForm):
+class AparatoForm(forms.ModelForm):
     class Meta:
         model = Aparato
         fields = ('tipo', 'nombre', 'fecha_expiracion', 'fecha_produccion', 'descripcion', 'precio_venta', 'stock')

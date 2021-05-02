@@ -14,34 +14,26 @@
               <strong>Formulario de Registro</strong>
           </div>
           <div class="card-body card-block">
-              <form action="{% url 'global:crear_admin' %}" method="post" enctype="multipart/form-data" class="form-horizontal">
+              <form action="{% url 'global:crear_cliente' %}" method="post" enctype="multipart/form-data" class="form-horizontal">
                   <div class="row form-group">
-                      <div class="col col-md-3">{{ form.username.label }}</div>
-                      <div class="col-12 col-md-9">{{ form.username }}</div>
+                      <div class="col col-md-3">{{ form.nombre.label }}</div>
+                      <div class="col-12 col-md-9">{{ form.nombre }}</div>
                   </div>
                   <div class="row form-group">
-                      <div class="col col-md-3">{{ form.first_name.label }}</div>
-                      <div class="col-12 col-md-9">{{ form.first_name }}</div>
+                      <div class="col col-md-3">{{ form.apellidos.label }}</div>
+                      <div class="col-12 col-md-9">{{ form.apellidos }}</div>
                   </div>
                   <div class="row form-group">
-                      <div class="col col-md-3">{{ form.last_name.label }}</div>
-                      <div class="col-12 col-md-9">{{ form.last_name }}</div>
+                      <div class="col col-md-3">{{ form.direccion.label }}</div>
+                      <div class="col-12 col-md-9">{{ form.direccion }}</div>
                   </div>
                   <div class="row form-group">
-                      <div class="col col-md-3">{{ form.email.label }}</div>
-                      <div class="col-12 col-md-9">{{ form.email }}</div>
-                  </div>
-                  <div class="row form-group">
-                      <div class="col col-md-3">{{ form.password.label }}</div>
-                      <div class="col-12 col-md-9">{{ form.password }}</div>
-                  </div>
-                  <div class="row form-group">
-                      <div class="col col-md-3">{{ form.pwd2.label }}</div>
-                      <div class="col-12 col-md-9">{{ form.pwd2 }}</div>
+                      <div class="col col-md-3">{{ form.telefono.label }}</div>
+                      <div class="col-12 col-md-9">{{ form.telefono }}</div>
                   </div>
                   <div class="text-center">
-                      <button type="submit" class="btn btn-primary">Registrar</button>
-                      <a href="{% url 'global:listar_admin' %}" class="btn btn-danger">Cancelar</a>
+                      <button type="submit" class="btn btn-primary fa fa-floppy-o fa-2x" aria-hidden="true">  Registrar</button> &nbsp; &nbsp; &nbsp; &nbsp;
+                      <a href="{% url 'global:listar_cliente' %}" class="btn btn-danger fa fa-trash fa-2x" aria-hidden="true">  Cancelar</a>
                   </div>
               </form>
           </div>

@@ -4,9 +4,9 @@ from django.urls import reverse_lazy
 from django.contrib.auth.models import User
 from axes.decorators import axes_dispatch
 from . import decorators
-from .forms import FormularioLogin, ServerForm, AdminForm
+from .forms import FormularioLogin, AparatoForm, ClienteForm
 from django.views.generic import ListView, UpdateView, CreateView, DeleteView
-from .models import Aparato
+from .models import Aparato, Cliente
 
 
 # Create your views here.
@@ -37,7 +37,6 @@ def logout(request):
     return redirect("login")
 
 
-# Vistas administrador global ##############
 @axes_dispatch
 @decorators.no_esta_logueado
 def login_global(request):
@@ -71,56 +70,56 @@ def inicio(request):
 
 @decorators.class_view_decorator(decorators.no_es_admin)
 class ListarCliente(ListView):
-    model = User
+    model = Cliente
     template_name = 'global/listar_cliente.html'
-    context_object_name = 'admins'
-    queryset = User.objects.filter(is_superuser=False)
+    context_object_name = 'clientes'
+    queryset = Cliente.objects.all()
 
 
 @decorators.class_view_decorator(decorators.no_es_admin)
 class ActualizarCliente(UpdateView):
-    model = User
-    form_class = AdminForm
+    model = Cliente
+    form_class = ClienteForm
     template_name = 'global/crear_cliente.html'
-    success_url = reverse_lazy('global:listar_admin')
+    success_url = reverse_lazy('global:listar_cliente')
 
 
 @decorators.class_view_decorator(decorators.no_es_admin)
 class CrearCliente(CreateView):
-    model = User
-    form_class = AdminForm
+    model = Cliente
+    form_class = ClienteForm
     template_name = 'global/crear_cliente.html'
-    success_url = reverse_lazy('global:listar_admin')
+    success_url = reverse_lazy('global:listar_cliente')
 
 
 @decorators.class_view_decorator(decorators.no_es_admin)
 class EliminarCliente(DeleteView):
-    model = User
-    success_url = reverse_lazy('global:listar_admin')
+    model = Cliente
+    success_url = reverse_lazy('global:listar_cliente')
 
 
 @decorators.class_view_decorator(decorators.no_es_admin)
 class CrearAparato(CreateView):
     model = Aparato
-    form_class = ServerForm
+    form_class = AparatoForm
     template_name = 'global/crear_aparato.html'
-    success_url = reverse_lazy('global:listar_server')
+    success_url = reverse_lazy('global:listar_aparato')
 
 
 @decorators.class_view_decorator(decorators.no_es_admin)
 class ListarAparato(ListView):  # MML esta incompleto
     model = Aparato
     template_name = 'global/listar_aparato.html'
-    context_object_name = 'servers'
+    context_object_name = 'aparatos'
     queryset = Aparato.objects.all()
 
 
 @decorators.class_view_decorator(decorators.no_es_admin)
 class ActualizarAparato(UpdateView):
     model = Aparato
-    form_class = ServerForm
+    form_class = AparatoForm
     template_name = 'global/aparato.html'
-    success_url = reverse_lazy('global:listar_server')
+    success_url = reverse_lazy('global:listar_aparato')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -131,4 +130,4 @@ class ActualizarAparato(UpdateView):
 @decorators.class_view_decorator(decorators.no_es_admin)
 class EliminarAparato(DeleteView):
     model = Aparato
-    success_url = reverse_lazy('global:listar_server')
+    success_url = reverse_lazy('global:listar_aparato')
