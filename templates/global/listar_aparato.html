@@ -28,22 +28,17 @@ Listado de Aparatos en venta
         </tr>
       </thead>
       <tbody>
-        {% for server in servers %}
+        {% for aparato in aparatos %}
         <tr>
-          <td>{{ server.id }}</td>
-          <td>{{ server.desc_srv }}</td>
-          <td>{{ server.ip_srv }}</td>
-          <td>{{ server.puerto }}</td>
-          <td>{{ server.usr.username }}</td>
-          <td>
-            {% if server.estado %}
-              Activo
-            {% else %}
-              Inactivo
-            {% endif %}
-          <td>
-            <a href="{% url 'global:eliminar_server' server.id %}" class="btn btn-danger">Eliminar</a>
-            <button onclick="abrir_modal_edicion('{% url 'global:editar_server' server.id %}')" class="btn btn-primary">Editar</button>
+          <td>{{ aparato.id }}</td>
+          <td>{{ aparato.tipo }}</td>
+          <td>{{ aparato.nombre }}</td>
+          <td>{{ aparato.descripcion }}</td>
+          <td>{{ aparato.precio_venta }}</td>
+          <td>{{ aparato.stock }}</td>
+            <td>
+            <a href="{% url 'global:eliminar_aparato' aparato.id %}" class="btn btn-danger fa fa-trash fa-2x" aria-hidden="true"></a>
+            <button onclick="abrir_modal_edicion('{% url 'global:editar_aparato' aparato.id %}')" class="btn btn-primary fa fa-pencil-square-o fa-2x" aria-hidden="true"></button>
           </td>
         </tr>
         {% endfor %}
@@ -52,7 +47,7 @@ Listado de Aparatos en venta
   </div>
 </div>
 {% else %}
-<h1>No existen servidores registrados</h1>
+<h1>No existen aparatos registrados porfavor registre uno en el boton nuevo</h1>
 {% endif %}
 
 <div class="modal fade" id="creacion" role="dialog">

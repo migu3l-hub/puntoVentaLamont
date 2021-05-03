@@ -121,11 +121,6 @@ class ActualizarAparato(UpdateView):
     template_name = 'global/aparato.html'
     success_url = reverse_lazy('global:listar_aparato')
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['servers'] = Aparato.objects.filter(estado=True)
-        return context
-
 
 @decorators.class_view_decorator(decorators.no_es_admin)
 class EliminarAparato(DeleteView):

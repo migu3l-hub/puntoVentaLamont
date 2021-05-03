@@ -1,14 +1,15 @@
 <div class="modal-dialog modal-lg" role="document">
   <div class="modal-content">
     <div class="modal-header">
-      <h2 class="modal-title">Creacion de Servidor</h2>
+      <h2 class="modal-title">Creacion de Aparato</h2>
       <button class="close" type="button" data-dismiss="modal" aria-label="Close">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
-    <form action="{% url 'global:crear_server' %}" method="POST">
+    <form action="{% url 'global:crear_aparato' %}" method="POST">
       {% csrf_token %}
       <div class="modal-body">
+        {{ form.media }}
         {{ form.as_p }}
       </div>
       <div class="modal-footer">

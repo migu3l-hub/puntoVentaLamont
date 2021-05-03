@@ -25,8 +25,8 @@ class Aparato(models.Model):
     fecha_expiracion = models.DateField()
     fecha_produccion = models.DateField()
     descripcion = models.TextField(max_length=400)
-    precio_compra = models.DecimalField(max_digits=5, decimal_places=2, default=0.00)
-    precio_venta = models.DecimalField(max_digits=5, decimal_places=2, default=0.00)
+    precio_compra = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    precio_venta = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     stock = models.PositiveSmallIntegerField()
 
     def __str__(self):

@@ -1,6 +1,6 @@
 from django.contrib.auth.forms import AuthenticationForm
 from django import forms
-from electronica import api
+from django.contrib.admin.widgets import AdminDateWidget
 from electronica.models import Aparato, Cliente
 
 
@@ -75,20 +75,22 @@ class AparatoForm(forms.ModelForm):
             'descripcion': forms.Textarea(
                 attrs={'class': 'form-control', 'rows': '6', 'placeholder': 'Pequeña Descripcion'}
             ),
-            'precio_Compra': forms.NumberInput(
+            'precio_venta': forms.NumberInput(
                 attrs={'class': 'form-control', 'placeholder': 'Precio de Compra'}
             ),
-            'precio_venta': forms.NumberInput(
-                attrs={'class': 'form-control', 'id': 'valor3', 'placeholder': 'Precio de Venta'}
+            'stock': forms.NumberInput(
+                attrs={'class': 'form-control', 'placeholder': 'Existentes en el almacen'}
             ),
-            'presentacion': forms.Select(
-                attrs={'class': 'form-control'}
+            'nombre': forms.TextInput(
+                attrs={'class': 'form-control', 'placeholder': 'Nombre del aparato'}
             ),
             'tipo': forms.Select(
                 attrs={'class': 'form-control'}
             ),
             'fecha_expiracion': forms.DateInput(
-                attrs={'class': 'form-control', 'id': 'Date', 'data-date-format': 'dd/mm/yyyy'}),
+                attrs={'class': 'form-control', 'type': 'date'}
+            ),
             'fecha_produccion': forms.DateInput(
-                attrs={'class': 'form-control', 'id': 'Date1', 'data-date-format': 'dd/mm/yyyy'}),
+                attrs={'class': 'form-control', 'type': 'date'}
+            ),
         }
