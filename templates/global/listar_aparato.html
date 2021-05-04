@@ -7,7 +7,7 @@ Listado de Aparatos en venta
 
 {% block body %}
 <div>
-  <button class="btn btn-primary" type="button" onclick="abrir_modal_creacion('{% url 'global:crear_aparato' %}')">Crear Aparato</button>
+  <button class="btn btn-primary fa fa-plus fa-lg" aria-hidden="true" type="button" onclick="abrir_modal_creacion('{% url 'global:crear_aparato' %}')">  Crear Aparato</button>
 </div>
 {% if aparatos %}
 <div class="card">
@@ -37,8 +37,8 @@ Listado de Aparatos en venta
           <td>{{ aparato.precio_venta }}</td>
           <td>{{ aparato.stock }}</td>
             <td>
-            <a href="{% url 'global:eliminar_aparato' aparato.id %}" class="btn btn-danger fa fa-trash fa-2x" aria-hidden="true"></a>
-            <button onclick="abrir_modal_edicion('{% url 'global:editar_aparato' aparato.id %}')" class="btn btn-primary fa fa-pencil-square-o fa-2x" aria-hidden="true"></button>
+            <a href="{% url 'global:eliminar_aparato' aparato.id %}" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></a>
+            <button type=button onclick="abrir_modal_edicion('{% url 'global:editar_aparato' aparato.id %}')" class="btn btn-warning btn-xs"><i class="fa fa-pencil" aria-hidden="true"></i></button>
           </td>
         </tr>
         {% endfor %}
