@@ -41,29 +41,25 @@
 
 				<form class="login100-form validate-form" method="POST" action="{% url 'login' %}">
                     {% csrf_token %}
+                    {% for field in form %}
 					<div class="wrap-input100 validate-input m-b-26" data-validate="Username is required">
-						<span class="label-input100">Nombre de usuario</span>
-						{{ form.username }}
+						<span class="label-input100">{{ field.label }}</span>
+						{{ field }}
 						<span class="focus-input100"></span>
 					</div>
-
-					<div class="wrap-input100 validate-input m-b-18" data-validate = "Password is required">
-						<span class="label-input100">Contraseña</span>
-                        {{ form.password }}
-						<span class="focus-input100"></span>
-					</div>
+                    {% endfor %}
 
 					<div class="flex-sb-m w-full p-b-30">
-						<div class="contact100-form-checkbox">
-							<input class="input-checkbox100" id="ckb1" type="checkbox" name="remember-me">
-							<label class="label-checkbox100" for="ckb1">
-								Remember me
-							</label>
-						</div>
+{#						<div class="contact100-form-checkbox">#}
+{#							<input class="input-checkbox100" id="ckb1" type="checkbox" name="remember-me">#}
+{#							<label class="label-checkbox100" for="ckb1">#}
+{#								Remember me#}
+{#							</label>#}
+{#						</div>#}
 
 						<div>
 							<a href="#" class="txt1">
-								Forgot Password?
+								Eres admin? inicia sesion aqui
 							</a>
 						</div>
 					</div>

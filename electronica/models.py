@@ -1,6 +1,7 @@
 from django.db import models
 
 # Create your models here.
+from django.forms import model_to_dict
 
 
 class Cliente(models.Model):
@@ -12,6 +13,10 @@ class Cliente(models.Model):
 
     def __str__(self):
         return self.nombre
+
+    def toJSON(self):
+        item = model_to_dict(self) # Se toma el modelo del que se esta hablando y se convierte en un diccionario
+        return item # Devuelve todos los atributos como un diccionario asi funciona como JSON
 
 
 class Aparato(models.Model):

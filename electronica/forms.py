@@ -10,15 +10,24 @@ class FormularioLogin(AuthenticationForm):
         self.fields['username'].widget.attrs['class'] = 'input100'
         self.fields['username'].widget.attrs['placeholder'] = 'Nombre de usuario'
         self.fields['username'].widget.attrs['type'] = 'text'
+        self.fields['username'].label = 'Nombre de usuario'
         self.fields['password'].widget.attrs['class'] = 'input100'
         self.fields['password'].widget.attrs['placeholder'] = 'Contraseña'
+        self.fields['password'].label = 'Contraseña'
 
 
 class ClienteForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        for form in self.visible_fields():
+            form.field.widget.attrs['class'] = 'form-control'
+        print(self.fields.keys())
+        self.fields['nombre'].widget.attrs['placeholder'] = 'Ingrese el nombre del cliente' # Ejemplo cambiar algo a un solo campo
 
     class Meta:
         model = Cliente
-        fields = ['nombre', 'apellidos', 'direccion', 'telefono']
+        fields = ['nombre', 'apellidos', 'direccion', 'telefono'] # Es el orden en que regresa los keys del diccionario de arriba
         labels = {
             'nombre': 'Nombre del cliente',
             'apellidos': 'Apellidos del cliente',
@@ -29,28 +38,23 @@ class ClienteForm(forms.ModelForm):
         widgets = {
             'nombre': forms.TextInput(
                 attrs={
-                    'class': 'form-control',
-                    'placeholder': 'Ingrese el nombre del cliente',
                     'id': 'usr'
                 }
             ),
             'apellidos': forms.TextInput(
                 attrs={
-                    'class': 'form-control',
                     'placeholder': 'Ingrese los apellidos del cliente',
                     'id': 'pwd'
                 }
             ),
             'direccion': forms.TextInput(
                 attrs={
-                    'class': 'form-control',
                     'placeholder': 'Ingrese la direccion del cliente',
                     'id': 'nombres'
                 }
             ),
             'telefono': forms.TextInput(
                 attrs={
-                    'class': 'form-control',
                     'placeholder': 'Ingrese el telefono del cliente',
                     'id': 'apellidos'
                 }
