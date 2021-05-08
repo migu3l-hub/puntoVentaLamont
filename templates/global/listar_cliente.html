@@ -55,14 +55,13 @@
 
 {% endif %}
     <script type="application/javascript">
-    $(document).ready(function() {
-        $.noConflict(); {# Este pequeño codigo es el que hace que toda la datatable funcione https://api.jquery.com/jquery.noconflict/ #}
     $('#cliente').DataTable({
         responsive: true,
+        autoWidth: false,
+
         "language": {
-            url : '{% static 'lib/spanish.txt' %}'
+            url : '../../static/lib/spanish.txt'
         }
-    });
     });
 </script>
 {% endblock %}
