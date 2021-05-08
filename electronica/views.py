@@ -117,7 +117,7 @@ class ListarAparato(ListView):  # MML esta incompleto
 class ActualizarAparato(UpdateView):
     model = Aparato
     form_class = AparatoForm
-    template_name = 'global/aparato.html'
+    template_name = 'global/crear_aparato.html'
     success_url = reverse_lazy('global:listar_aparato')
 
 

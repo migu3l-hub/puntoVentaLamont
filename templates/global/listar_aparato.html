@@ -5,9 +5,17 @@
 Listado de Aparatos en venta
 {% endblock titulo %}
 
+{% block extrastyle %}
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/dataTables.bootstrap4.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js"></script>
+{% endblock %}
+
 {% block body %}
 <div>
-  <button class="btn btn-primary fa fa-plus fa-lg" aria-hidden="true" type="button" onclick="abrir_modal_creacion('{% url 'global:crear_aparato' %}')">  Crear Aparato</button>
+{#  <button class="btn btn-primary fa fa-plus fa-lg" aria-hidden="true" type="button" onclick="abrir_modal_creacion('{% url 'global:crear_aparato' %}')">   Crear Aparato</button>#}
+<a href="{% url 'global:crear_aparato' %}" class="btn btn-primary fa fa-plus fa-lg" aria-hidden="true">  Nuevo Aparato</a>
 </div>
 {% if aparatos %}
 <div class="card">
@@ -15,7 +23,7 @@ Listado de Aparatos en venta
     <strong class="card-title">Listado de Aparatos en venta</strong>
   </div>
   <div class="table-stats order-table ov-h">
-    <table class="table">
+    <table id="aparato" class="table">
       <thead>
         <tr>
             <th>ID</th>
@@ -38,13 +46,15 @@ Listado de Aparatos en venta
           <td>{{ aparato.stock }}</td>
             <td>
             <a href="{% url 'global:eliminar_aparato' aparato.id %}" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></a>
-            <button type=button onclick="abrir_modal_edicion('{% url 'global:editar_aparato' aparato.id %}')" class="btn btn-warning btn-xs"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+{#            <button type=button onclick="abrir_modal_edicion('{% url 'global:editar_aparato' aparato.id %}')" class="btn btn-warning btn-xs"><i class="fa fa-pencil" aria-hidden="true"></i></button>#}
+                <a href="{% url 'global:editar_aparato' aparato.id %}" class="btn btn-warning btn-xs"><i class="fa fa-pencil" aria-hidden="true"></i></a>
           </td>
         </tr>
         {% endfor %}
       </tbody>
     </table>
   </div>
+
 </div>
 {% else %}
 <h1>No existen aparatos registrados porfavor registre uno en el boton nuevo</h1>
@@ -61,5 +71,16 @@ Listado de Aparatos en venta
 {% endblock body %}
 
 {% block extrajs %}
-<script src="{% static 'js/crear_server.js' %}"></script>
-{% endblock extrajs %}
+    <script type="application/javascript">
+        $.noConflict();
+        $(document).ready(function() {
+        $('#aparato').DataTable({
+            "language": {
+            url : '{% static 'lib/spanish.txt' %}'
+        }
+        });
+        });
+    </script>
+{#<script src="{% static 'js/crear_server.js' %}"></script>#}
+
+{% endblock %}

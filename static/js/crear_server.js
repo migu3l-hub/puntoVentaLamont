@@ -9,3 +9,4 @@ var $ = jQuery.noConflict();
       $(this).modal('show');
     });
   }
+

@@ -20,7 +20,7 @@
     <strong class="card-title">Listado de Clientes Registrados</strong>
     </div>
       <div class="table-stats order-table ov-h">
-    <table id="example" class="table table-striped" style="width:100%">
+    <table id="cliente" class="table table-striped" style="width:100%">
         <thead>
                 <tr>
                   <th>ID</th>
@@ -48,10 +48,16 @@
             </tbody>
     </table>
       </div>
-<script type="application/javascript">
+  {% else %}
+
+  <h1>Aun no existen clientes registrados favor de registrar uno</h1>
+
+
+{% endif %}
+    <script type="application/javascript">
     $(document).ready(function() {
         $.noConflict(); {# Este pequeño codigo es el que hace que toda la datatable funcione https://api.jquery.com/jquery.noconflict/ #}
-    $('#example').DataTable({
+    $('#cliente').DataTable({
         responsive: true,
         "language": {
             url : '{% static 'lib/spanish.txt' %}'
@@ -59,8 +65,4 @@
     });
     });
 </script>
-
-
-
-{% endif %}
 {% endblock %}

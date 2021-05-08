@@ -1,21 +1,71 @@
-<div class="modal-dialog modal-lg" role="document">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h2 class="modal-title">Creacion de Aparato</h2>
-      <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    <form action="{% url 'global:crear_aparato' %}" method="POST">
-      {% csrf_token %}
-      <div class="modal-body">
-        {{ form.media }}
-        {{ form.as_p }}
+{% extends 'global/index.html' %}
+{% block titulo %}
+  Proyecto LANIA | Registro de Aparato
+{% endblock titulo %}
+
+{% block body %}
+<form method="POST" >
+  {% csrf_token %}
+  {% if error %}
+    <h2>{{ error }}</h2>
+  {% else %}
+      <div class="card">
+          <div class="card-header">
+              <strong>Formulario de Registro</strong>
+          </div>
+          <div class="card-body card-block">
+              <form action="{% url 'global:crear_aparato' %}" method="post" enctype="multipart/form-data" class="form-horizontal">
+                  <div class="row form-group">
+                      {{ form.as_p }}
+                  </div>
+                  <div class="text-center">
+                      <button type="submit" class="btn btn-primary fa fa-floppy-o fa-2x" aria-hidden="true">  Registrar</button> &nbsp; &nbsp; &nbsp; &nbsp;
+                      <a href="{% url 'global:listar_aparato' %}" class="btn btn-danger fa fa-trash fa-2x" aria-hidden="true">  Cancelar</a>
+                  </div>
+              </form>
+          </div>
       </div>
-      <div class="modal-footer">
-        <button class="btn btn-danger" type="button" data-dismiss="modal">Cancelar</button>
-        <button class="btn btn-primary" type="submit">Confirmar</button>
-      </div>
-    </form>
-  </div>
-</div>
+  {% endif %}
+    {% if form.errors %} <!-- MML se imprimen los errores del formulario-->
+    {% for field in form %}
+        {% for error in field.errors %}
+            <div class="alert alert-danger">
+                <strong>{{ error|escape }}</strong>
+            </div>
+        {% endfor %}
+    {% endfor %}
+    {% for error in form.non_field_errors %}
+        <div class="alert alert-danger">
+            <strong>{{ error|escape }}</strong>
+        </div>
+    {% endfor %}
+    {% endif %}
+</form>
+
+{% endblock body %}
+
+
+
+
+
+{#<div class="modal-dialog modal-lg" role="document">#}
+{#  <div class="modal-content">#}
+{#    <div class="modal-header">#}
+{#      <h2 class="modal-title">Creacion de Aparato</h2>#}
+{#      <button class="close" type="button" data-dismiss="modal" aria-label="Close">#}
+{#        <span aria-hidden="true">&times;</span>#}
+{#      </button>#}
+{#    </div>#}
+{#    <form action="{% url 'global:crear_aparato' %}" method="POST">#}
+{#      {% csrf_token %}#}
+{#      <div class="modal-body">#}
+{#        {{ form.media }}#}
+{#        {{ form.as_p }}#}
+{#      </div>#}
+{#      <div class="modal-footer">#}
+{#        <button class="btn btn-danger" type="button" data-dismiss="modal">Cancelar</button>#}
+{#        <button class="btn btn-primary" type="submit">Confirmar</button>#}
+{#      </div>#}
+{#    </form>#}
+{#  </div>#}
+{#</div>#}
