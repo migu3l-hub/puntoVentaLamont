@@ -15,7 +15,6 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
@@ -26,7 +25,6 @@ SECRET_KEY = 'django-insecure-8fgz(22lpgy_wqv!=#5y*#l%yr+)oh#dsnil=*21!jg&f$_#9z
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-
 
 # Application definition
 
@@ -73,21 +71,19 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'puntoVentaLamont.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME':'puntoventalamont',
-        'USER':'lamont',
-        'PASSWORD':'electronicaSB369',
-        'HOST':'server-hp',
-        'PORT':'3306'
+        'NAME': 'puntoventalamont',
+        'USER': 'lamont',
+        'PASSWORD': 'electronicaSB369',
+        'HOST': 'server-hp',
+        'PORT': '3306'
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -107,7 +103,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
@@ -121,7 +116,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # AXES
 # MML Se establece la configuracion de axes
 AXES_ENABLED = True
@@ -132,13 +126,11 @@ AXES_ENABLE_ADMIN = False
 AXES_LOCKOUT_URL = "bloqueado/"
 AXES_LOCKOUT_TEMPLATE = "usuarioBloqueado.html"
 
-
 # SESSION TIMEOUT
 # GIG se establece el tiempo de vida de la sesion
-SESSION_EXPIRE_SECONDS = 180 # 3 minutos
+SESSION_EXPIRE_SECONDS = 180  # 3 minutos
 SESSION_EXPIRE_AFTER_LAST_ACTIVITY = True
 SESSION_TIMEOUT_REDIRECT = 'login'
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/

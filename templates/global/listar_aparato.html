@@ -15,7 +15,7 @@ Listado de Aparatos en venta
 {% block body %}
 <div>
 {#  <button class="btn btn-primary fa fa-plus fa-lg" aria-hidden="true" type="button" onclick="abrir_modal_creacion('{% url 'global:crear_aparato' %}')">   Crear Aparato</button>#}
-<a href="{% url 'global:crear_aparato' %}" class="btn btn-primary fa fa-plus fa-lg" aria-hidden="true">  Nuevo Aparato</a>
+<a href="{% url 'global:crear_aparato' %}" class="btn btn-primary fa fa-plus fa-lg mb-4" aria-hidden="true" id="boton">  Nuevo Aparato</a>
 </div>
 {% if aparatos %}
 <div class="card">
@@ -74,11 +74,24 @@ Listado de Aparatos en venta
     <script type="application/javascript">
         $.noConflict();
         $(document).ready(function() {
-        $('#aparato').DataTable({
-            "language": {
-            url : '{% static 'lib/spanish.txt' %}'
-        }
-        });
+            $('#aparato').DataTable({
+                "language": {
+                    url : '{% static 'lib/spanish.txt' %}'
+                }
+            });
+            $('.boton').on('click', function () {
+                $.ajax({
+                    url : '{% url 'global:listar_aparato' %}',
+                    type : 'POST',
+                    data: {id:1},
+                    dataType : 'json',
+                }).success(function (data) { // Se llama data la cosa que retorne el ajax
+                    console.log(data);
+                }).error(function (jqXHR, textStatus, errorThrown) { // Se puede controlar el error desde django y enviarlo por data para no usar esto
+                    alert(textStatus+ ' : '+ errorThrown);
+                });
+            });
+
         });
     </script>
 {#<script src="{% static 'js/crear_server.js' %}"></script>#}

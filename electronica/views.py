@@ -1,4 +1,5 @@
 from django.contrib.auth import authenticate, login as do_login, logout as do_logout
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from axes.decorators import axes_dispatch
@@ -111,6 +112,10 @@ class ListarAparato(ListView):  # MML esta incompleto
     template_name = 'global/listar_aparato.html'
     context_object_name = 'aparatos'
     queryset = Aparato.objects.all()
+
+    def post(self,request, *args, **kwargs):
+        data = {}
+        return JsonResponse(data)
 
 
 @decorators.class_view_decorator(decorators.no_es_admin)
