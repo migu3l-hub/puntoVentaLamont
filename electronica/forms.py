@@ -21,7 +21,7 @@ class ClienteForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
 
         for form in self.visible_fields():
-            form.field.widget.attrs['class'] = 'form-control'
+            form.field.widget.attrs['autocomplete'] = 'off' # Es mas facil con django widget_tweaks ejemplo en crear cliente
         print(self.fields.keys())
         self.fields['nombre'].widget.attrs['placeholder'] = 'Ingrese el nombre del cliente' # Ejemplo cambiar algo a un solo campo
 

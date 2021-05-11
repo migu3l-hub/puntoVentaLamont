@@ -1,4 +1,5 @@
 {% extends 'global/index.html' %}
+{% load widget_tweaks %}
 {% block titulo %}
   Proyecto LANIA | Registro de Aparato
 {% endblock titulo %}
@@ -6,18 +7,18 @@
 {% block body %}
 <form method="POST" >
   {% csrf_token %}
-  {% if error %}
-    <h2>{{ error }}</h2>
-  {% else %}
       <div class="card">
           <div class="card-header">
               <strong>Formulario de Registro</strong>
           </div>
           <div class="card-body card-block">
               <form action="{% url 'global:crear_aparato' %}" method="post" enctype="multipart/form-data" class="form-horizontal">
+                  {% for field in form %}
                   <div class="row form-group">
-                      {{ form.as_p }}
+                      <div class="col col-md-3">{{ field.label }}</div>
+                      <div class="col-12 col-md-9">{{ field|add_class:'form-control'|attr:'autocomplete:off' }}</div>
                   </div>
+                  {% endfor %}
                   <div class="text-center">
                       <button type="submit" class="btn btn-primary fa fa-floppy-o fa-2x" aria-hidden="true">  Registrar</button> &nbsp; &nbsp; &nbsp; &nbsp;
                       <a href="{% url 'global:listar_aparato' %}" class="btn btn-danger fa fa-trash fa-2x" aria-hidden="true">  Cancelar</a>
@@ -25,25 +26,29 @@
               </form>
           </div>
       </div>
-  {% endif %}
-    {% if form.errors %} <!-- MML se imprimen los errores del formulario-->
-    {% for field in form %}
-        {% for error in field.errors %}
-            <div class="alert alert-danger">
-                <strong>{{ error|escape }}</strong>
-            </div>
-        {% endfor %}
-    {% endfor %}
-    {% for error in form.non_field_errors %}
-        <div class="alert alert-danger">
-            <strong>{{ error|escape }}</strong>
-        </div>
-    {% endfor %}
-    {% endif %}
 </form>
+
 
 {% endblock body %}
 
+{% block extrajs %}
+<script>
+    {% if form.errors %} <!-- MML se imprimen los errores del formulario-->
+    var errors = '';
+    {% for field in form %}
+        {% for error in field.errors %}
+            errors += '{{ error }}\n';
+        {%  endfor %}
+    {% endfor %}
+        Swal.fire({
+          title: 'Error!',
+          text: errors,
+          icon: 'error',
+          confirmButtonText: 'OK'
+        })
+    {%  endif %}
+</script>
+{% endblock %}
 
 
 
