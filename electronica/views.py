@@ -3,6 +3,9 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from axes.decorators import axes_dispatch
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
+
 from . import decorators
 from .forms import FormularioLogin, AparatoForm, ClienteForm
 from django.views.generic import ListView, UpdateView, CreateView, DeleteView
@@ -106,20 +109,31 @@ class CrearAparato(CreateView):
     success_url = reverse_lazy('global:listar_aparato')
 
 
-@decorators.class_view_decorator(decorators.no_es_admin)
+
 class ListarAparato(ListView):  # MML esta incompleto
     model = Aparato
     template_name = 'global/listar_aparato.html'
     context_object_name = 'aparatos'
     queryset = Aparato.objects.all()
 
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
     def post(self,request, *args, **kwargs):
         data = {}
         try:
-            data = Aparato.objects.get(id=1).toJSON()
+            action = request.POST['action']
+            if action == 'searchdata':
+                print("Entre al if")
+                data = []
+                for i in Aparato.objects.all():
+                    data.append(i.toJSON()) # El array lleva un conjunto de diccionarios pero datatable lo toma como objetos cada dic
+            else:
+                data['error'] = "Ha ocurrido un error"
         except Exception as e:
             data['error'] = str(e)
-        return JsonResponse(data)
+        return JsonResponse(data, safe=False) # Se debe poner el safe en false cuando se envia mas de un diccionario para que se serialize
 
 
 @decorators.class_view_decorator(decorators.no_es_admin)

@@ -34,6 +34,10 @@ class Aparato(models.Model):
     precio_venta = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     stock = models.PositiveSmallIntegerField()
 
+    def toJSON(self):
+        item = model_to_dict(self)
+        return item
+
     def __str__(self):
         return self.nombre
 
