@@ -5,10 +5,9 @@ from django.urls import reverse_lazy
 from axes.decorators import axes_dispatch
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
-
 from . import decorators
 from .forms import FormularioLogin, AparatoForm, ClienteForm
-from django.views.generic import ListView, UpdateView, CreateView, DeleteView
+from django.views.generic import ListView, UpdateView, CreateView, DeleteView, TemplateView
 from .models import Aparato, Cliente
 
 # Create your views here.
@@ -34,41 +33,13 @@ def login(request):
         return render(request, "login.html", {"form": FormularioLogin})
 
 
-
 def logout(request):
     do_logout(request)
     return redirect("login")
 
 
-# @axes_dispatch
-# @decorators.no_esta_logueado
-# def login_global(request):
-#     if request.method == 'POST':
-#         nomuser = request.POST.get("username")
-#         conuser = request.POST.get("password")
-#         user = authenticate(request, username=nomuser, password=conuser)
-#         if user is not None:
-#             if user.is_superuser:
-#                 try:
-#                     do_login(request, user)
-#                     return redirect('global:index')
-#                 except Exception:
-#                     return render(request, 'global/login_global.html',
-#                                   {"form": FormularioLogin, "errores": "Error al iniciar sesión"})
-#             else:
-#                 return render(request, 'login.html',
-#                               {"form": FormularioLogin, "errores": "Usuario por favor inicia sesion aquí."})
-#         else:
-#             return render(request, 'global/login_global.html',
-#                           {"form": FormularioLogin, "errores": "Usuario y/o contraseña inválidos."})
-#     elif request.method == "GET":
-#         return render(request, "global/login_global.html", {"form": FormularioLogin})
-
-
-@decorators.no_es_admin
-def inicio(request):
-    if request.method == "GET":
-        return render(request, 'global/index.html')
+class Inicio(TemplateView): # Todas las vistas basadas en clases tienen los metodos get_context_data get post y dispatch
+    template_name = 'global/index.html'
 
 
 @decorators.class_view_decorator(decorators.no_es_admin)
@@ -120,7 +91,7 @@ class ListarAparato(ListView):  # MML esta incompleto
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
-    def post(self,request, *args, **kwargs):
+    def post(self,request, *args, **kwargs): # Tambien esta get_context_data que permite añadir cosas al contexto
         data = {}
         try:
             action = request.POST['action']

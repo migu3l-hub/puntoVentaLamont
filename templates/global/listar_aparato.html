@@ -20,7 +20,7 @@ Listado de Aparatos en venta
     <strong class="card-title">Listado de Aparatos en venta</strong>
   </div>
   <div class="table-stats order-table ov-h">
-    <table id="aparato" class="table">
+    <table id="aparato" class="table table-striped">
       <thead>
         <tr>
           <th>ID</th>
@@ -32,23 +32,22 @@ Listado de Aparatos en venta
           <th>Opciones</th>
         </tr>
       </thead>
-      <tbody>
-        {% for aparato in aparatos %}
-        <tr>
-          <td>{{ aparato.id }}</td>
-          <td>{{ aparato.tipo }}</td>
-          <td>{{ aparato.nombre }}</td>
-          <td>{{ aparato.descripcion }}</td>
-          <td>{{ aparato.precio_venta }}</td>
-          <td>{{ aparato.stock }}</td>
-            <td>
-            <a href="{% url 'global:eliminar_aparato' aparato.id %}" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></a>
-            <button type=button onclick="abrir_modal_edicion('{% url 'global:editar_aparato' aparato.id %}')" class="btn btn-warning btn-xs"><i class="fa fa-pencil" aria-hidden="true"></i></button>
-{#                <a href="{% url 'global:editar_aparato' aparato.id %}" class="btn btn-warning btn-xs"><i class="fa fa-pencil" aria-hidden="true"></i></a>#}
-          </td>
-        </tr>
-        {% endfor %}
-      </tbody>
+{#      <tbody>#}
+{#        {% for aparato in aparatos %}#}
+{#        <tr>#}
+{#          <td>{{ aparato.id }}</td>#}
+{#          <td>{{ aparato.tipo }}</td>#}
+{#          <td>{{ aparato.nombre }}</td>#}
+{#          <td>{{ aparato.descripcion }}</td>#}
+{#          <td>{{ aparato.precio_venta }}</td>#}
+{#          <td>{{ aparato.stock }}</td>#}
+{#            <td>#}
+{#            <a href="{% url 'global:eliminar_aparato' aparato.id %}" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></a>#}
+{#            <button type=button onclick="abrir_modal_edicion('{% url 'global:editar_aparato' aparato.id %}')" class="btn btn-warning btn-xs"><i class="fa fa-pencil" aria-hidden="true"></i></button>#}
+{#          </td>#}
+{#        </tr>#}
+{#        {% endfor %}#}
+{#      </tbody>#}
     </table>
   </div>
 
@@ -69,13 +68,8 @@ Listado de Aparatos en venta
 
 {% block extrajs %}
     <script type="application/javascript">
-        $.noConflict();
+
         $(document).ready(function() {
-            $('#aparato').DataTable({
-                "language": {
-                    url : '{% static 'lib/spanish.txt' %}'
-                }
-            });
             $('.boton').on('click', function () {
                 $.ajax({
                     url : '{% url 'global:listar_aparato' %}',
@@ -88,11 +82,11 @@ Listado de Aparatos en venta
                     alert(textStatus+ ' : '+ errorThrown);
                 });
             });
-
         });
     </script>
 
-{#<script src="{% static 'js/crear_server.js' %}"></script>#}
 <script src="{% static 'js/list_aparato_ajax.js'%}"></script>
+{#<script src="{% static 'js/crear_server.js' %}"></script> // no funciona solo si el codigo esta en un archivo#}
+
 
 {% endblock %}
