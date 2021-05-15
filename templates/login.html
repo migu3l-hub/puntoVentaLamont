@@ -27,16 +27,27 @@
 <!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="{% static 'css/util.css' %}">
 	<link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <!--===============================================================================================-->
 </head>
 <body>
-	
+
+    {% if form.errors %} <!-- MML se imprimen los errores del formulario-->
+    {% for field in form %}
+        {% for error in field.errors %}
+            <div class="alert alert-danger">
+                <strong>{{ error|escape }}</strong>
+            </div>
+        {% endfor %}
+    {% endfor %}
+    {% endif %}
+
 	<div class="limiter">
 		<div class="container-login100">
 			<div class="wrap-login100">
 				<div class="login100-form-title" style="background-image: url({% static 'images/bg-01.jpg' %});">
 					<span class="login100-form-title-1">
-						Sign In
+						Inicio de Sesión
 					</span>
 				</div>
 
@@ -60,13 +71,30 @@
 					</div>
 
 					<div class="container-login100-form-btn">
-						<button class="login100-form-btn">
-							Login
+						<button class="login100-form-btn fa fa-sign-in" aria-hidden="true">
+							Iniciar sesión
 						</button>
 					</div>
 				</form>
 			</div>
 		</div>
+        <script type="application/javascript">
+        {% if form.errors %} <!-- MML se imprimen los errores del formulario-->
+        var errors = '';
+        {% for field in form.errors %}
+            {% for error in field.errors %}
+                errors += '{{ error }}\n';
+                console.log("hola",errors)
+            {%  endfor %}
+        {% endfor %}
+            Swal.fire({
+              title: 'Error al iniciar sesión',
+              text: errors,
+              icon: 'error',
+              confirmButtonText: 'OK'
+            })
+        {%  endif %}
+        </script>
 	</div>
 	
 <!--===============================================================================================-->
@@ -85,5 +113,8 @@
 	<script src="{% static 'vendor/countdowntime/countdowntime.js' %}"></script>
 <!--===============================================================================================-->
 	<script src="{% static 'js/main.js' %}"></script>
+
+
+
 </body>
 </html>

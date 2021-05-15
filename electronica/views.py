@@ -1,4 +1,5 @@
 from django.contrib.auth import authenticate, login as do_login, logout as do_logout
+from django.contrib.auth.views import LoginView
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
@@ -13,25 +14,29 @@ from .models import Aparato, Cliente
 # Create your views here.
 
 
-@axes_dispatch
-@decorators.no_esta_logueado
-def login(request):
-    if request.method == "POST":  # GIG POST significa que el usuario envio datos que debemos procesar
-        nomusuario = request.POST.get("username")
-        pwdenviada = request.POST.get("password")
-        user = authenticate(request=request, username=nomusuario, password=pwdenviada)
-        if user is not None:
-            try:
-                do_login(request, user)
-                return redirect('global:index')
-            except Exception:
-                return render(request, 'login.html', {"form": FormularioLogin, "errores": "Error al iniciar sesión"})
-        else:
-            return render(request, 'login.html',
-                          {"form": FormularioLogin, "errores": "Usuario y/o contraseña inválidos."})
-    elif request.method == "GET":
-        return render(request, "login.html", {"form": FormularioLogin})
+# @axes_dispatch
+# @decorators.no_esta_logueado
+# def login(request):
+#     if request.method == "POST":  # GIG POST significa que el usuario envio datos que debemos procesar
+#         nomusuario = request.POST.get("username")
+#         pwdenviada = request.POST.get("password")
+#         user = authenticate(request=request, username=nomusuario, password=pwdenviada)
+#         if user is not None:
+#             try:
+#                 do_login(request, user)
+#                 return redirect('global:index')
+#             except Exception:
+#                 return render(request, 'login.html', {"form": FormularioLogin, "errores": "Error al iniciar sesión"})
+#         else:
+#             return render(request, 'login.html',
+#                           {"form": FormularioLogin, "errores": "Usuario y/o contraseña inválidos."})
+#     elif request.method == "GET":
+#         return render(request, "login.html", {"form": FormularioLogin})
 
+
+class Login(LoginView): # PArece que no usa authenticate no se sabe si funciona con axes
+    template_name = "login.html" # Automaticamente si esta bien lo redirecciona a donde diga el settings
+    authentication_form = FormularioLogin  # Los errores son tratados en el propio html con form.errors y salen con swee
 
 def logout(request):
     do_logout(request)

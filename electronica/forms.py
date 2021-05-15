@@ -4,7 +4,7 @@ from django.contrib.admin.widgets import AdminDateWidget
 from electronica.models import Aparato, Cliente
 
 
-class FormularioLogin(AuthenticationForm):
+class FormularioLogin(AuthenticationForm): # ESTA SOBREESCRITURA PARA PONER ESTILOS SE PODRIA HACER CON djamgo_widget_tw
     def __init__(self, *args, **kwargs):  # es el metodo que ejecuta toda clase de python lo redifinimos
         super(FormularioLogin, self).__init__(*args, **kwargs)
         self.fields['username'].widget.attrs['class'] = 'input100'
