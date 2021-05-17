@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<title>Login V15</title>
+	<title>Electronica San Bruno</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 <!--===============================================================================================-->	
@@ -25,10 +25,9 @@
 <!--===============================================================================================-->	
 	<link rel="stylesheet" type="text/css" href="{% static 'vendor/daterangepicker/daterangepicker.css' %}">
 <!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="{% static 'css/util.css' %}">
 	<link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
-    <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <!--===============================================================================================-->
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 </head>
 <body>
 
@@ -88,7 +87,7 @@
             {%  endfor %}
         {% endfor %}
             Swal.fire({
-              title: 'Error al iniciar sesión',
+              title: 'Nombre y/o contraseña incorrectos',
               text: errors,
               icon: 'error',
               confirmButtonText: 'OK'

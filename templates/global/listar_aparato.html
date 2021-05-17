@@ -5,33 +5,118 @@
 Listado de Aparatos en venta
 {% endblock titulo %}
 
-{% block extrastyle %}
-
-{% endblock %}
 
 {% block body %}
-<div>
-  <button class="btn btn-primary fa fa-plus fa-lg" aria-hidden="true" type="button" onclick="abrir_modal_creacion('{% url 'global:crear_aparato' %}')">   Crear Aparato</button>
+<main>
+                    <div class="container-fluid">
+                        <h1 class="mt-4">Tables</h1>
+                        <ol class="breadcrumb mb-4">
+                            <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+                            <li class="breadcrumb-item active">Tables</li>
+                        </ol>
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                DataTables is a third party plugin that is used to generate the demo table below. For more information about DataTables, please visit the
+                                <a target="_blank" href="https://datatables.net/">official DataTables documentation</a>
+                                .
+                            </div>
+                        </div>
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <i class="fas fa-table mr-1"></i>
+                                DataTable Example
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                        <thead>
+                                            <tr>
+                                              <th>ID</th>
+                                              <th>Tipo</th>
+                                              <th>Nombre</th>
+                                              <th>Descripcion</th>
+                                              <th>Precio venta</th>
+                                              <th>stock</th>
+                                              <th>Opciones</th>
+                                            </tr>
+                                          </thead>
+                                          <tbody>
+                                            {% for aparato in aparatos %}
+                                            <tr>
+                                              <td>{{ aparato.id }}</td>
+                                              <td>{{ aparato.tipo }}</td>
+                                              <td>{{ aparato.nombre }}</td>
+                                              <td>{{ aparato.descripcion }}</td>
+                                              <td>{{ aparato.precio_venta }}</td>
+                                              <td>{{ aparato.stock }}</td>
+                                                <td>
+                                                <a href="{% url 'global:eliminar_aparato' aparato.id %}" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></a>
+                                                <button type=button onclick="abrir_modal_edicion('{% url 'global:editar_aparato' aparato.id %}')" class="btn btn-warning btn-xs"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+                                              </td>
+                                            </tr>
+                                            {% endfor %}
+                                          </tbody>
+                                        </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{#{% block body %}#}
+{#<div>#}
+{#  <button class="btn btn-primary fa fa-plus fa-lg" aria-hidden="true" type="button" onclick="abrir_modal_creacion('{% url 'global:crear_aparato' %}')">   Crear Aparato</button>#}
 {#<a href="{% url 'global:crear_aparato' %}" class="btn btn-primary fa fa-plus fa-lg mb-4" aria-hidden="true" id="boton">  Nuevo Aparato</a>#}
-</div>
-{% if aparatos %}
-<div class="card">
-  <div class="card-header">
-    <strong class="card-title">Listado de Aparatos en venta</strong>
-  </div>
-  <div class="table-stats order-table ov-h">
-    <table id="aparato" class="table table-striped">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Tipo</th>
-          <th>Nombre</th>
-          <th>Descripcion</th>
-          <th>Precio venta</th>
-          <th>stock</th>
-          <th>Opciones</th>
-        </tr>
-      </thead>
+{#</div>#}
+{#{% if aparatos %}#}
+{#<div class="card">#}
+{#  <div class="card-header">#}
+{#    <strong class="card-title">Listado de Aparatos en venta</strong>#}
+{#  </div>#}
+{#  <div class="table-stats order-table ov-h">#}
+{#    <table id="aparato" class="table table-striped">#}
+{#      <thead>#}
+{#        <tr>#}
+{#          <th>ID</th>#}
+{#          <th>Tipo</th>#}
+{#          <th>Nombre</th>#}
+{#          <th>Descripcion</th>#}
+{#          <th>Precio venta</th>#}
+{#          <th>stock</th>#}
+{#          <th>Opciones</th>#}
+{#        </tr>#}
+{#      </thead>#}
 {#      <tbody>#}
 {#        {% for aparato in aparatos %}#}
 {#        <tr>#}
@@ -48,45 +133,44 @@ Listado de Aparatos en venta
 {#        </tr>#}
 {#        {% endfor %}#}
 {#      </tbody>#}
-    </table>
-  </div>
+{#    </table>#}
+{#  </div>#}
+{##}
+{#</div>#}
+{#{% else %}#}
+{#<h1>No existen aparatos registrados porfavor registre uno en el boton nuevo</h1>#}
+{#{% endif %}#}
+{##}
+{#<div class="modal fade" id="creacion" role="dialog">#}
+{##}
+{#</div>#}
+{##}
+{#<div class="modal fade" id="edicion" role="dialog">#}
+{##}
+{#</div>#}
+{##}
+{#{% endblock body %}#}
 
-</div>
-{% else %}
-<h1>No existen aparatos registrados porfavor registre uno en el boton nuevo</h1>
-{% endif %}
-
-<div class="modal fade" id="creacion" role="dialog">
-
-</div>
-
-<div class="modal fade" id="edicion" role="dialog">
-
-</div>
-
-{% endblock body %}
-
-{% block extrajs %}
-    <script type="application/javascript">
-
-        $(document).ready(function() {
-            $('.boton').on('click', function () {
-                $.ajax({
-                    url : '{% url 'global:listar_aparato' %}',
-                    type : 'POST',
-                    data: {id:1},
-                    dataType : 'json',
-                }).success(function (data) { // Se llama data la cosa que retorne el ajax
-                    console.log(data);
-                }).error(function (jqXHR, textStatus, errorThrown) { // Se puede controlar el error desde django y enviarlo por data para no usar esto
-                    alert(textStatus+ ' : '+ errorThrown);
-                });
-            });
-        });
-    </script>
-
-<script src="{% static 'js/list_aparato_ajax.js'%}"></script>
+{#{% block extrajs %}#}
+{#    <script type="application/javascript">#}
+{##}
+{#        $(document).ready(function() {#}
+{#            $('.boton').on('click', function () {#}
+{#                $.ajax({#}
+{#                    url : '{% url 'global:listar_aparato' %}',#}
+{#                    type : 'POST',#}
+{#                    data: {id:1},#}
+{#                    dataType : 'json',#}
+{#                }).success(function (data) { // Se llama data la cosa que retorne el ajax#}
+{#                    console.log(data);#}
+{#                }).error(function (jqXHR, textStatus, errorThrown) { // Se puede controlar el error desde django y enviarlo por data para no usar esto#}
+{#                    alert(textStatus+ ' : '+ errorThrown);#}
+{#                });#}
+{#            });#}
+{#        });#}
+{#    </script>#}
+{##}
+{#<script src="{% static 'js/list_aparato_ajax.js'%}"></script>#}
 {#<script src="{% static 'js/crear_server.js' %}"></script> // no funciona solo si el codigo esta en un archivo#}
 
-
-{% endblock %}
+{#{% endblock %}#}
