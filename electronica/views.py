@@ -34,9 +34,10 @@ from .models import Aparato, Cliente
 #         return render(request, "login.html", {"form": FormularioLogin})
 
 
-class Login(LoginView): # PArece que no usa authenticate no se sabe si funciona con axes
+class Login(LoginView): # PArece que no usa authenticate no se sabe si funciona con axes REEMPLAZAR CON FORM
     template_name = "login.html" # Automaticamente si esta bien lo redirecciona a donde diga el settings
     authentication_form = FormularioLogin  # Los errores son tratados en el propio html con form.errors y salen con swee
+
 
 def logout(request):
     do_logout(request)
