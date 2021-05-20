@@ -1,67 +1,65 @@
 {% extends 'global/index.html' %}
 {% load static %}
-{% load widget_tweaks %}
+
 {% block titulo %}
-  Biblio | Listado de Administradores
+Listado de Aparatos en venta
 {% endblock titulo %}
 
-{% block extrastyle %}
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/dataTables.bootstrap4.min.css">
-    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-    <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js"></script>
-{% endblock %}
 
 {% block body %}
-
-  {% if clientes %}
-      <div class="card-header">
-    <strong class="card-title">Listado de Clientes Registrados</strong>
-    </div>
-      <div class="table-stats order-table ov-h">
-    <table id="cliente" class="table table-striped" style="width:100%">
-        <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Nombre</th>
-                  <th>Apellidos</th>
-                  <th>Dirección</th>
-                  <th>Numero de telefono</th>
-                  <th>Opciones</th>
-                </tr>
-            </thead>
-            <tbody>
-              {% for cliente in clientes %}
-                <tr>
-                  <td>{{ cliente.id }}</td>
-                  <td>{{ cliente.nombre }}</td>
-                  <td>{{ cliente.apellidos }}</td>
-                  <td>{{ cliente.direccion }}</td>
-                  <td>{{ cliente.telefono }}</td>
-                  <td>
-                    <a href="{% url 'global:editar_cliente' cliente.id %}" class="btn btn-warning fa fa-pencil-square-o fa-2x" aria-hidden="true"></a>
-                    <a href="{% url 'global:eliminar_cliente' cliente.id %}" class="btn btn-danger fa fa-trash fa-1x" aria-hidden="true"></a>
-                  </td>
-                </tr>
-              {% endfor %}
-            </tbody>
-    </table>
-      </div>
-  {% else %}
-
-  <h1>Aun no existen clientes registrados favor de registrar uno</h1>
-
-
-{% endif %}
-    <script type="application/javascript">
-    $('#cliente').DataTable({
-        responsive: true,
-        autoWidth: false,
-
-        "language": {
-            url : '../../static/lib/spanish.txt'
-        }
-    });
-</script>
+    <main>
+        <div class="container-fluid">
+            <h1 class="mt-4">Tables</h1>
+            <ol class="breadcrumb mb-4">
+                <li class="breadcrumb-item"><a href="index.html">Aparatos</a></li>
+                <li class="breadcrumb-item active">Tables</li>
+            </ol>
+            <div class="card mb-4">
+                <div class="card-body">
+                    DataTables is a third party plugin that is used to generate the demo table below. For more
+                    information about DataTables, please visit the
+                    <a target="_blank" href="https://datatables.net/">official DataTables documentation</a>
+                    .
+                </div>
+            </div>
+            <div class="card mb-4">
+                <div class="card-header">
+                    <i class="fas fa-table mr-1"></i>
+                    Lista de clientes Registrados
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombre</th>
+                                <th>Apellidos</th>
+                                <th>Dirección</th>
+                                <th>Telefono</th>
+                                <th>Opciones</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for cliente in clientes %}
+                                <tr>
+                                    <td>{{ cliente.id }}</td>
+                                    <td>{{ cliente.nombre }}</td>
+                                    <td>{{ cliente.apellidos }}</td>
+                                    <td>{{ cliente.direccion }}</td>
+                                    <td>{{ cliente.telefono }}</td>
+                                    <td>
+                                        <a href="{% url 'global:eliminar_cliente' cliente.id %}"
+                                           class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></a>
+                                        <a href="{% url 'global:editar_cliente' cliente.id %}" class="btn btn-warning btn-xs"><i class="fas fa-edit"></i></a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
 {% endblock %}

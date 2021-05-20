@@ -67,7 +67,7 @@
                             <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
                                     <a class="nav-link" href="{% url 'global:listar_aparato' %}">Lista de Aparatos</a>
-                                    <a class="nav-link" href="layout-sidenav-light.html">Light Sidenav</a>
+                                    <a class="nav-link" href="{% url 'global:crear_aparato' %}">Crear Aparato</a>
                                 </nav>
                             </div> <!--Clientes -->
                             <a class="nav-link" data-toggle="collapse" data-target="#demo" aria-controls="collapseLayouts" href="charts.html">
@@ -77,8 +77,8 @@
                             </a>
                             <div id="demo" class="collapse">
                                 <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="layout-static.html">Static Navigation</a>
-                                    <a class="nav-link" href="layout-sidenav-light.html">Light Sidenav</a>
+                                    <a class="nav-link" href="{% url 'global:listar_cliente' %}">Lista clientes</a>
+                                    <a class="nav-link" href="{% url 'global:crear_cliente' %}">Crear cliente</a>
                                 </nav>
                             </div>
                             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">

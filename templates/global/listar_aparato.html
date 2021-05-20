@@ -11,7 +11,7 @@ Listado de Aparatos en venta
         <div class="container-fluid">
             <h1 class="mt-4">Tables</h1>
             <ol class="breadcrumb mb-4">
-                <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+                <li class="breadcrumb-item"><a href="index.html">Aparatos</a></li>
                 <li class="breadcrumb-item active">Tables</li>
             </ol>
             <div class="card mb-4">
@@ -24,21 +24,21 @@ Listado de Aparatos en venta
             </div>
             <div class="card mb-4">
                 <div class="card-header">
-                    <i class="fas fa-table mr-1"></i>
-                    DataTable Example
+                    <i class="fas fa-sim-card"></i>
+                    Lista de aparatos existentes
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                        <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
                             <thead>
                             <tr>
-                                <th>ID</th>
-                                <th>Tipo</th>
-                                <th>Nombre</th>
+                                <th width="40px">ID</th>
+                                <th width="50px">Tipo</th>
+                                <th width="40px">Nombre</th>
                                 <th>Descripcion</th>
-                                <th>Precio venta</th>
-                                <th>stock</th>
-                                <th>Opciones</th>
+                                <th width="80px">Precio venta</th>
+                                <th width="65px">stock</th>
+                                <th width="100px">Opciones</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -55,8 +55,7 @@ Listado de Aparatos en venta
                                            class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></a>
                                         <button type=button
                                                 onclick="abrir_modal_edicion('{% url 'global:editar_aparato' aparato.id %}')"
-                                                class="btn btn-warning btn-xs"><i class="fa fa-pencil"
-                                                                                  aria-hidden="true"></i></button>
+                                                class="btn btn-warning btn-xs"><i class="fas fa-edit"></i></button>
                                     </td>
                                 </tr>
                             {% endfor %}
@@ -69,9 +68,9 @@ Listado de Aparatos en venta
     </main>
 {% endblock %}
 
-
-
-
+{% block extrajs %}
+    <script src="{% static 'js/crear_server.js' %}"></script>
+{% endblock %}
 
 
 
