@@ -1,8 +1,12 @@
 // Call the dataTables jQuery plugin
 $(document).ready(function() {
-  $('#dataTable').DataTable({
-    "language": {
-            url: '/static/lib/spanish.txt' // si encuentra el documento pero por alguna razon no funciona
-        },
-  });
-});
+    $('#dataTable').DataTable( {
+        // language: {
+        //     url: 'https://cdn.datatables.net/plug-ins/1.10.20/i18n/Spanish.json'
+        // }
+    } );
+} );
+
+
+
+

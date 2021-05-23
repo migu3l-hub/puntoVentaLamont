@@ -53,9 +53,8 @@ Listado de Aparatos en venta
                                     <td>
                                         <a href="{% url 'global:eliminar_aparato' aparato.id %}"
                                            class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></a>
-                                        <button type=button
-                                                onclick="abrir_modal_edicion('{% url 'global:editar_aparato' aparato.id %}')"
-                                                class="btn btn-warning btn-xs"><i class="fas fa-edit"></i></button>
+                                        <a href="{% url 'global:editar_aparato' aparato.id %}" class="btn btn-warning btn-xs">
+                                            <i class="fas fa-edit"></i></a>
                                     </td>
                                 </tr>
                             {% endfor %}
@@ -68,9 +67,7 @@ Listado de Aparatos en venta
     </main>
 {% endblock %}
 
-{% block extrajs %}
-    <script src="{% static 'js/crear_server.js' %}"></script>
-{% endblock %}
+
 
 
 

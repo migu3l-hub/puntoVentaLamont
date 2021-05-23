@@ -24,7 +24,7 @@
             <div class="card mb-4">
                 <div class="card-header">
                     <i class="fas fa-plus-square"></i>
-                       &nbsp; Incerte los datos del nuevo cliente
+                       &nbsp; Incerte los datos del cliente
                 </div>
                 <div class="card-body">
                     <form action="{% url 'global:crear_cliente' %}" method="post" enctype="multipart/form-data"
@@ -39,8 +39,8 @@
                         <div class="text-center">
                             <button type="submit" class="btn btn-primary " aria-hidden="true">
                                <i class="fas fa-plus"></i>   Registrar
-                            </button> &nbsp; &nbsp; &nbsp; &nbsp;
-                            <a href="{% url 'global:listar_aparato' %}" class="btn btn-danger"
+                            </button> &nbsp; &nbsp;
+                            <a href="{% url 'global:listar_cliente' %}" class="btn btn-danger"
                                aria-hidden="true"> <i class="fas fa-trash"></i>  Cancelar</a>
                         </div>
                     </form>
