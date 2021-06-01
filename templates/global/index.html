@@ -12,10 +12,11 @@
         <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet" crossorigin="anonymous"/> <!-- El css de datatables -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" crossorigin="anonymous"></script> <!-- Las fuentes -->
         <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script> <!-- Los sweetalert -->
-
+        <link rel="stylesheet" href="{% static 'lib/jqueryConfirm/jquery-confirm.min.css' %}">
         <!--Para agrgar un collapse mas para agregar varios ver en w3schools collapse accordeon -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
         {% block extrastyle %}
 
         {% endblock %}
@@ -231,6 +232,7 @@
         <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
         <script src="{% static 'assets/demo/datatables-demo.js' %}"></script>
         <script src="{% static 'js/dropdown.js' %}"></script>
+        <script src="{% static 'lib/jqueryConfirm/jquery-confirm.min.js' %}"></script>
         {% block extrajs %}
 
         {% endblock %}

@@ -5,10 +5,33 @@
 
 {% block body %}
 
-<form method="post">
+<form method="post" id="confirm" onsubmit="event.preventDefault(); alerta();">
   {% csrf_token %}
   <p><strong>¿Desea eliminar el registro {{ object.nombre }}?</strong></p>
   <button type="submit" class="btn btn-danger">Confirmar</button> <a class="btn btn-primary" href="{% url 'global:listar_aparato' %}">Cancelar</a>
 </form>
 
 {% endblock body %}
+
+{% block extrajs %}
+<script type="text/javascript">
+function comenzar() {
+    $.alert({
+        title: 'Alert!',
+        content: 'Simple alert!',
+    });
+    formulario = document.getElementById("confirm");
+    formulario.addEventListener('submit', alerta, false);
+}
+
+function alerta() {
+    $.alert({
+        title: 'Alert!',
+        content: 'Simple alert!',
+    });
+    event.currentTarget.submit();
+}
+
+window.addEventListener('load',comenzar,false);
+</script>
+{% endblock %}

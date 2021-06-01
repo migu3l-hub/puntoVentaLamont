@@ -1,13 +1,13 @@
-$.noConflict();
+// $.noConflict();
 $(document).ready(function() {
-    $('#aparato').DataTable({
-        responsive: true,
-        autoWidth: false,
-        destroy: true, // Permite reinicializar la tabla con un proceso
-        deferRender: true, // Se usa cuando la tabla tiene mas de 500,000 registros para agilisarla
-        "language": {
-            url: '/static/lib/spanish.txt' // si encuentra el documento pero por alguna razon no funciona
-        },
+    $('#dataTable').DataTable({
+        // responsive: true,
+        // autoWidth: false,
+        // destroy: true, // Permite reinicializar la tabla con un proceso
+        // deferRender: true, // Se usa cuando la tabla tiene mas de 500,000 registros para agilisarla
+        // "language": {
+        //     url: '/static/lib/spanish.txt' // si encuentra el documento pero por alguna razon no funciona
+        // },
         ajax: {
             url: window.location.pathname,
             type: 'POST',
