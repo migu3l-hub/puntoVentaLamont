@@ -7,9 +7,10 @@ from axes.decorators import axes_dispatch
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from . import decorators
-from .forms import FormularioLogin, AparatoForm, ClienteForm
+from .forms import FormularioLogin, AparatoForm, ClienteForm, CompraForm
 from django.views.generic import ListView, UpdateView, CreateView, DeleteView, TemplateView
-from .models import Aparato, Cliente
+from .models import Item, Cliente, Compra
+
 
 # Create your views here.
 
@@ -34,8 +35,8 @@ from .models import Aparato, Cliente
 #         return render(request, "login.html", {"form": FormularioLogin})
 
 
-class Login(LoginView): # PArece que no usa authenticate no se sabe si funciona con axes REEMPLAZAR CON FORM
-    template_name = "login.html" # Automaticamente si esta bien lo redirecciona a donde diga el settings
+class Login(LoginView):  # PArece que no usa authenticate no se sabe si funciona con axes REEMPLAZAR CON FORM
+    template_name = "login.html"  # Automaticamente si esta bien lo redirecciona a donde diga el settings
     authentication_form = FormularioLogin  # Los errores son tratados en el propio html con form.errors y salen con swee
 
 
@@ -44,7 +45,8 @@ def logout(request):
     return redirect("login")
 
 
-class Inicio(TemplateView): # Todas las vistas basadas en clases tienen los metodos get_context_data get post y dispatch
+class Inicio(
+    TemplateView):  # Todas las vistas basadas en clases tienen los metodos get_context_data get post y dispatch
     template_name = 'global/index.html'
 
 
@@ -80,42 +82,43 @@ class EliminarCliente(DeleteView):
 
 @decorators.class_view_decorator(decorators.no_es_admin)
 class CrearAparato(CreateView):
-    model = Aparato
+    model = Item
     form_class = AparatoForm
     template_name = 'global/crear_aparato.html'
     success_url = reverse_lazy('global:listar_aparato')
 
 
-
 class ListarAparato(ListView):  # MML esta incompleto
-    model = Aparato
+    model = Item
     template_name = 'global/listar_aparato.html'
     context_object_name = 'aparatos'
-    queryset = Aparato.objects.all()
+    queryset = Item.objects.all()
 
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
-    def post(self,request, *args, **kwargs): # Tambien esta get_context_data que permite añadir cosas al contexto
+    def post(self, request, *args, **kwargs):  # Tambien esta get_context_data que permite añadir cosas al contexto
         data = {}
         try:
             action = request.POST['action']
             if action == 'searchdata':
                 print("Entre al if")
                 data = []
-                for i in Aparato.objects.all():
-                    data.append(i.toJSON()) # El array lleva un conjunto de diccionarios pero datatable lo toma como objetos cada dic
+                for i in Item.objects.all():
+                    data.append(
+                        i.toJSON())  # El array lleva un conjunto de diccionarios pero datatable lo toma como objetos cada dic
             else:
                 data['error'] = "Ha ocurrido un error"
         except Exception as e:
             data['error'] = str(e)
-        return JsonResponse(data, safe=False) # Se debe poner el safe en false cuando se envia mas de un diccionario para que se serialize
+        return JsonResponse(data,
+                            safe=False)  # Se debe poner el safe en false cuando se envia mas de un diccionario para que se serialize
 
 
 @decorators.class_view_decorator(decorators.no_es_admin)
 class ActualizarAparato(UpdateView):
-    model = Aparato
+    model = Item
     form_class = AparatoForm
     template_name = 'global/crear_aparato.html'
     success_url = reverse_lazy('global:listar_aparato')
@@ -123,5 +126,27 @@ class ActualizarAparato(UpdateView):
 
 @decorators.class_view_decorator(decorators.no_es_admin)
 class EliminarAparato(DeleteView):
-    model = Aparato
+    model = Item
     success_url = reverse_lazy('global:listar_aparato')
+
+
+@decorators.class_view_decorator(decorators.no_es_admin)
+class CrearCompra(CreateView):
+    model = Compra
+    form_class = CompraForm
+    template_name = 'global/crear_compra.html'
+    success_url = reverse_lazy('global:listar_compra')
+
+
+@decorators.class_view_decorator(decorators.no_es_admin)
+class ListarCompra(ListView):
+    model = Compra
+    template_name = 'global/listar_compra.html'
+    context_object_name = 'compras'
+    queryset = Compra.objects.all()
+
+
+@decorators.class_view_decorator(decorators.no_es_admin)
+class EliminarCompra(DeleteView):
+    model = Item
+    success_url = reverse_lazy('global:listar_compra')

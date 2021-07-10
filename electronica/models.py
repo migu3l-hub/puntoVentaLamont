@@ -5,21 +5,21 @@ from django.forms import model_to_dict
 
 
 class Cliente(models.Model):
-    id = models.AutoField("ID",primary_key=True,blank=False,null=False)
-    nombre = models.CharField("Nombre",max_length=60, blank=False, null=False)
-    apellidos = models.CharField("Apellidos",max_length=100, blank=True, null=False)
-    direccion = models.CharField("Direccion",max_length=100, blank=True, null=True)
-    telefono = models.CharField("Telefono cliente",max_length=20, blank=True, null=True)
+    id = models.AutoField("ID", primary_key=True, blank=False, null=False)
+    nombre = models.CharField("Nombre", max_length=60, blank=False, null=False)
+    apellidos = models.CharField("Apellidos", max_length=100, blank=True, null=False)
+    direccion = models.CharField("Direccion", max_length=100, blank=True, null=True)
+    telefono = models.CharField("Telefono cliente", max_length=20, blank=True, null=True)
 
     def __str__(self):
         return self.nombre
 
     def toJSON(self):
-        item = model_to_dict(self) # Se toma el modelo del que se esta hablando y se convierte en un diccionario
-        return item # Devuelve todos los atributos como un diccionario asi funciona como JSON
+        item = model_to_dict(self)  # Se toma el modelo del que se esta hablando y se convierte en un diccionario
+        return item  # Devuelve todos los atributos como un diccionario asi funciona como JSON
 
 
-class Aparato(models.Model):
+class Item(models.Model):
     TIPO = (
         ('generico', 'Generico'),
         ('comercial', 'Comercial'),
@@ -40,6 +40,25 @@ class Aparato(models.Model):
 
     def __str__(self):
         return self.nombre
+
+
+class Marca(models.Model):
+    id = models.AutoField(primary_key=True)
+    nombre = models.CharField(max_length=100, null=False, default="", blank=False)
+
+    def __str__(self):
+        return self.nombre
+
+
+class Compra(models.Model):
+    id = models.AutoField(primary_key=True)
+    marca = models.ForeignKey(Marca, on_delete=models.SET_NULL, null=True)
+    cantidad = models.FloatField(null=False, default=0.00, blank=False)
+    item = models.ForeignKey(Item, on_delete=models.SET_NULL, null=True)
+
+
+
+
 
     # def preeciototal(self):
     #     precio_total=self.precio_Compra*self.stock
@@ -64,9 +83,8 @@ class Aparato(models.Model):
     #      self.igv=0
     #      super(Medicamentos, self).save(*args, **kwargs)
 
-
-#---------------------------------------------------
-#Ventas
+# ---------------------------------------------------
+# Ventas
 #
 # class TimeStampModel(models.Model):
 #
@@ -98,4 +116,3 @@ class Aparato(models.Model):
 #
 #
 # signals.post_save.connect(update_stock, sender=todo_item, dispatch_uid="update_stock_count")
-

@@ -1,10 +1,11 @@
 from django.contrib.auth.forms import AuthenticationForm
 from django import forms
 from django.contrib.admin.widgets import AdminDateWidget
-from electronica.models import Aparato, Cliente
+from electronica.models import Item, Cliente, Compra
 
 
-class FormularioLogin(AuthenticationForm): # ESTA SOBREESCRITURA PARA PONER ESTILOS SE PODRIA HACER CON djamgo_widget_tw
+class FormularioLogin(
+    AuthenticationForm):  # ESTA SOBREESCRITURA PARA PONER ESTILOS SE PODRIA HACER CON djamgo_widget_tw
     def __init__(self, *args, **kwargs):  # es el metodo que ejecuta toda clase de python lo redifinimos
         super(FormularioLogin, self).__init__(*args, **kwargs)
         self.fields['username'].widget.attrs['class'] = 'input100'
@@ -21,13 +22,16 @@ class ClienteForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
 
         for form in self.visible_fields():
-            form.field.widget.attrs['autocomplete'] = 'off' # Es mas facil con django widget_tweaks ejemplo en crear cliente
+            form.field.widget.attrs[
+                'autocomplete'] = 'off'  # Es mas facil con django widget_tweaks ejemplo en crear cliente
         print(self.fields.keys())
-        self.fields['nombre'].widget.attrs['placeholder'] = 'Ingrese el nombre del cliente' # Ejemplo cambiar algo a un solo campo
+        self.fields['nombre'].widget.attrs[
+            'placeholder'] = 'Ingrese el nombre del cliente'  # Ejemplo cambiar algo a un solo campo
 
     class Meta:
         model = Cliente
-        fields = ['nombre', 'apellidos', 'direccion', 'telefono'] # Es el orden en que regresa los keys del diccionario de arriba
+        fields = ['nombre', 'apellidos', 'direccion',
+                  'telefono']  # Es el orden en que regresa los keys del diccionario de arriba
         labels = {
             'nombre': 'Nombre del cliente',
             'apellidos': 'Apellidos del cliente',
@@ -64,7 +68,7 @@ class ClienteForm(forms.ModelForm):
 
 class AparatoForm(forms.ModelForm):
     class Meta:
-        model = Aparato
+        model = Item
         fields = ('tipo', 'nombre', 'fecha_expiracion', 'fecha_produccion', 'descripcion', 'precio_venta', 'stock')
         label = {
             'tipo': 'Tipo de aparato',
@@ -96,5 +100,27 @@ class AparatoForm(forms.ModelForm):
             ),
             'fecha_produccion': forms.DateInput(
                 attrs={'class': 'form-control', 'type': 'date'}
+            ),
+        }
+
+
+class CompraForm(forms.ModelForm):
+    class Meta:
+        model = Compra
+        fields = ('marca', 'cantidad', 'item')
+        label = {
+            'marca': 'Marca',
+            'cantidad': 'Cantidad comprada',
+            'item': 'Producto',
+        }
+        widgets = {
+            'marca': forms.Select(
+                attrs={'class': 'form-control'}
+            ),
+            'cantidad': forms.NumberInput(
+                attrs={'class': 'form-control'}
+            ),
+            'item': forms.Select(
+                attrs={'class': 'form-control'}
             ),
         }
