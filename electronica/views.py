@@ -146,7 +146,8 @@ class ListarCompra(ListView):
     queryset = Compra.objects.all()
 
 
-@decorators.class_view_decorator(decorators.no_es_admin)
-class EliminarCompra(DeleteView):
-    model = Item
-    success_url = reverse_lazy('global:listar_compra')
+# @decorators.class_view_decorator(decorators.no_es_admin)
+def eliminar_compra(pk=0):
+    compra = Compra.objects.get(id=pk)
+    compra.delete()
+    return redirect('global:listar_compra')

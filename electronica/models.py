@@ -53,7 +53,7 @@ class Marca(models.Model):
 class Compra(models.Model):
     id = models.AutoField(primary_key=True)
     marca = models.ForeignKey(Marca, on_delete=models.SET_NULL, null=True)
-    cantidad = models.FloatField(null=False, default=0.00, blank=False)
+    cantidad = models.IntegerField(null=False, default=0, blank=False)
     item = models.ForeignKey(Item, on_delete=models.SET_NULL, null=True)
 
 

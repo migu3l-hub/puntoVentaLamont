@@ -17,5 +17,5 @@ urlpatterns = [
 
     path('crear_compra/', login_required(CrearCompra.as_view(),login_url='login'),name='crear_compra'),
     path('listar_compra/', login_required(ListarCompra.as_view(), login_url='login'), name='listar_compra'),
-    path('eliminar_compra/<int:pk>/', login_required(EliminarCompra.as_view(), login_url='login'), name='eliminar_compra'),
+    path('eliminar_compra/<int:pk>/', login_required(eliminar_compra, login_url='login'), name='eliminar_compra'),
 ]

@@ -7,7 +7,6 @@ Listado de Aparatos en venta
 
 {% block extrastyle %}
 
-<script src="{% static 'js/eliminar_registro' %}"></script>
 
 {% endblock %}
 
@@ -71,7 +70,7 @@ Listado de Aparatos en venta
                                             <p>¿Desea continuar?</p>
                                         </div>
                                         <div class="modal-footer">
-                                            <a href="{% url 'global:eliminar_compra' compra.id %}"><button type="button" class="btn-evaluar">Confirmar</button></a>
+                                            <a href="{% url 'global:eliminar_compra' compra.id %}"><button type="button" class="btn btn-danger">Confirmar</button></a>
                                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar
                                             </button>
                                         </div>
@@ -90,5 +89,15 @@ Listado de Aparatos en venta
 
 {% block extrajs %}
 
+    <script type="text/javascript">
+        function eliminar(id) {
+        $(document).ready(function () {
+            $('#'+id).ready(function () {
+                $('#'+id+'a').modal('show');//básico
+            });
+        });
+    }
+
+    </script>
 
 {% endblock %}
