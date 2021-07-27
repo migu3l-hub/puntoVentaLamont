@@ -1,0 +1,260 @@
+{% extends 'global/index.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block titulo %}
+  Proyecto LANIA | Registro de Administradores
+{% endblock titulo %}
+
+{% block body %}
+<form method="POST">
+  <main>
+        <div class="container-fluid">
+            <h1 class="mt-4">Tables</h1>
+            <ol class="breadcrumb mb-4">
+                <li class="breadcrumb-item"><a href="index.html">Aparatos</a></li>
+                <li class="breadcrumb-item active">Tables</li>
+            </ol>
+            <div class="card mb-4">
+                <div class="card-body">
+                    DataTables is a third party plugin that is used to generate the demo table below. For more
+                    information about DataTables, please visit the
+                    <a target="_blank" href="https://datatables.net/">official DataTables documentation</a>
+                    .
+                </div>
+            </div>
+            <div class="card mb-4">
+                <div class="card-header">
+                    <i class="fas fa-plus-square"></i>
+                       &nbsp; Incerte los datos de la venta
+                </div>
+                <div class="card-body">
+                    <form action="{% url 'global:crear_venta' %}" method="post" enctype="multipart/form-data"
+                          class="form-horizontal">
+                        {% csrf_token %}
+                            <div class="row form-group">
+                                <div class="col col-md-1">Cliente</div>
+                                <div class="col col-md-3"><input type="text" name="name" class="form-control" id="name"></div>
+                                <div class="col col-md-1"><button type="button" class="btn btn-primary" data-toggle="modal" id="modal" onclick="getClientes(this.id)">Buscar</button></div>
+                                <div class="col col-md-4" id="nombre_id">Nombre: </div>
+                                <div class="col col-md-2" id="tel_id">Telefono:</div>
+                            </div>
+                            <div class="modal fade" id="modala" tabindex="-1" role="dialog"
+                                 aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <h6>Primera palabra</h6>
+                                            {{ form2.clientes }}
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                            <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="getDatos(this.id)">Save changes</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <div class="col col-md-1">Producto</div>
+                                <div class="col col-md-3"><input type="text" class="form-control" required id="itemid" name="itemid"></div>
+                                <div class="col col-md-1"><button type="button" class="btn btn-primary" onclick="getItems(this.id)" id="moditems">Buscar</button></div>
+                            </div>
+                            <div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="moditemsa">
+                                <div class="modal-dialog modal-xl">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLongTitle">Registros encontrados</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="card-body">
+                                            <table class="table" id="data">
+                                                <thead>
+                                                <tr>
+                                                    <th scope="col" style="width: 10%;">Id</th>
+                                                    <th scope="col" style="width: 20%;">Tipo</th>
+                                                    <th scope="col" style="width: 50%;">Nombre</th>
+                                                    <th scope="col" style="width: 20%;">Descripcion</th>
+                                                    <th scope="col" style="width: 20%;">Stock</th>
+                                                    <th scope="col" style="width: 20%;">Cantidad a seleccionar</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Producto</th>
+                                <th>Cantidad</th>
+                                <th>Suma</th>
+                            </tr>
+                            </thead>
+                        {% if request.session.carro.items %}
+                            {% for key, value in request.session.carro.items %}
+                            <tbody>
+                                <tr>
+                                    <td>{{ value.producto_id }}</td>
+                                    <td>{{ value.nombre }}</td>
+                                    <td>{{ value.cantidad }}</td>
+                                    <td>{{ value.stock }}</td>
+                                    <td>
+                                        <a href="#"
+                                           class="btn btn-primary">Editar</a>
+                                        <a href="#"
+                                           class="btn btn-danger">Eliminar</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            {% endfor %}
+                        {% endif %}
+                        </table>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary " aria-hidden="true">
+                               <i class="fas fa-plus"></i>   Registrar
+                            </button> &nbsp; &nbsp;
+                            <a href="{% url 'global:listar_cliente' %}" class="btn btn-danger"
+                               aria-hidden="true"> <i class="fas fa-trash"></i>  Cancelar</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+</form>
+
+{% endblock body %}
+
+
+
+{% block extrajs %}
+        <script type="text/javascript" src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'lib/datatables-1.10.20/css/dataTables.bootstrap4.min.css' %}"/>
+    <link rel="stylesheet" href="{% static 'lib/datatables-1.10.20/plugins/responsive-2.2.3/css/responsive.bootstrap4.min.css' %}"/>
+    <script src="{% static 'lib/datatables-1.10.20/js/jquery.dataTables.js' %}"></script>
+    <script src="{% static 'lib/datatables-1.10.20/js/dataTables.bootstrap4.min.js' %}"></script>
+    <script src="{% static 'lib/datatables-1.10.20/plugins/responsive-2.2.3/js/dataTables.responsive.min.js' %}"></script>
+    <script src="{% static 'lib/datatables-1.10.20/plugins/responsive-2.2.3/js/responsive.bootstrap4.min.js' %}"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script type="text/javascript">
+
+        function getClientes(id) {
+            var name = $("#name").val();
+            if (name){
+                var request = $.ajax({
+                    type: "GET",
+                    url: "{% url 'global:get_clientes' %}",
+                    data: {
+                        "name": name,
+                    },
+                });
+                request.done(function(response) {
+                    // Agregamos los resultados al select
+                    $("#id_clientes").html(response.clientes);
+                    // $("#id_municipio, #id_localidad").trigger("change");
+                });
+            } else {
+                alert("por favor escriba algo");
+            }
+                $(document).ready(function () {
+                $('#' + id).ready(function () {
+                    $('#' + id + 'a').modal('show');//básico
+                });
+            });
+        }
+
+        function getDatos(){
+            alert("aqui");
+            var selected = $("#id_clientes").val();
+            var div = document.getElementById('nombre_id');
+            var div2 = document.getElementById('tel_id');
+            if (selected){
+                var request = $.ajax({
+                    type: "POST",
+                    url: "{% url 'global:get_clientes' %}",
+                    data: {
+                        "selected": selected,
+                    },
+                });
+                request.done(function(response) {
+                    div.innerHTML="";
+                    div2.innerHTML="";
+                    div.innerHTML += 'Nombre: ';
+                    div2.innerHTML += 'Telefono: ';
+                    div.innerHTML += response.nombre + ' ';
+                    div.innerHTML += response.apellidos;
+                    div2.innerHTML += response.telefono;
+                });
+            } else {
+                alert("por favor escriba algo");
+            }
+        }
+
+        function getItems(id) {
+            var item = $("#itemid").val();
+            if (item) {
+                alert("table");
+                $('#data').DataTable({
+                    responsive: true, //permite que se ajusten los datos a medida que s ecambie el tamaño de la pag
+                    autoWidth: true, //respetara el ancho de las columnas especificados de las tablas
+                    destroy: true, //es para reinicializar la tabla con otro proceso
+                    deferRender: true,//agilisa la carga cuando son muchos registors
+                    ajax: {
+                        url: window.location.pathname, //la url con la que se esta trabajando
+                        type: 'GET', //peticion
+                        data: {
+                            'action': item //se le esta enviando la variable searchdata a el metodo post de categorylist
+                        },
+                        dataSrc: "" //esto es por si se manda en una variable los diccionarios
+                    },
+                    columns: [
+                        {"data": "id"}, //col 0
+                        {"data": "tipo"}, //col 1 ..
+                        {"data": "nombre"}, //col 2 ..
+                        {"data": "descripcion"},
+                        {"data": "stock"},
+                        {"data": "stock"},
+                    ],
+                    columnDefs: [ //aqui se personalizan las filas que se vayan creando
+                        {
+                            targets: [-1], //listara las cosas al reves
+                            class: 'text-center',
+                            orderable: false,
+                            render: function (data, type, row) { //data es el dato que se especifica en la columna y row a los atributos del objeto
+                                //return '<b>hola</b>'; SI NO SE PONE ENTRE COMILLAS SIMPLES NO SIRVE
+                                var buttons = '<input type="number" id="'+ row.id +'" size="5">&nbsp;&nbsp;';
+                                buttons += '<a href="/global/agregar/' + row.id + '/" type="button" class="btn btn-primary btn-xs btn-flat">Elegir</a>';
+                                return buttons; //se retorna el html generado arriba, SI NO VA ENTRE COMILLAS SIMPLES no sirve
+                               // buttons += '<a href="/erp/category/delete/' + row.id + '/" type="button" class="btn btn-primary btn-xs btn-flat">Elegir</a>';
+
+                            }
+                        },
+                    ],
+                    initComplete: function (settings, json) {
+                    }
+                });
+                $(document).ready(function () {
+                    $('#' + id).ready(function () {
+                        $('#' + id + 'a').modal('show');//básico
+                    });
+                });
+            }
+        }
+
+    </script>
+
+{% endblock %}

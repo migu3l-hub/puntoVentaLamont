@@ -26,13 +26,13 @@ class Item(models.Model):
     )
     id = models.AutoField(primary_key=True)
     tipo = models.CharField(choices=TIPO, max_length=30)
-    nombre = models.CharField(max_length=200, unique=True)
+    nombre = models.CharField(max_length=100, unique=True)
     fecha_expiracion = models.DateField()
     fecha_produccion = models.DateField()
     descripcion = models.TextField(max_length=400)
     precio_compra = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     precio_venta = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
-    stock = models.PositiveSmallIntegerField()
+    stock = models.PositiveSmallIntegerField(default=0)
 
     def toJSON(self):
         item = model_to_dict(self)
@@ -55,8 +55,16 @@ class Compra(models.Model):
     marca = models.ForeignKey(Marca, on_delete=models.SET_NULL, null=True)
     cantidad = models.IntegerField(null=False, default=0, blank=False)
     item = models.ForeignKey(Item, on_delete=models.SET_NULL, null=True)
+    precio = models.FloatField(null=False, default=0.00, blank=False)
 
 
+class Venta(models.Model):
+    id = models.AutoField(primary_key=True)
+    serie = models.IntegerField(null=False, unique=True)
+    cliente = models.ForeignKey(Cliente, on_delete=models.SET_NULL, null=True)
+    despachador = models.CharField(max_length=80, null=False, default="", blank=False)
+    items = models.ManyToManyField(Item)
+    total = models.FloatField(null=False, default=0.00, blank=False)
 
 
 

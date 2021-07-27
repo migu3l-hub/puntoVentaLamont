@@ -1,3 +1,4 @@
+import tele as tele
 from django.contrib.auth import authenticate, login as do_login, logout as do_logout
 from django.contrib.auth.views import LoginView
 from django.http import JsonResponse
@@ -7,9 +8,10 @@ from axes.decorators import axes_dispatch
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from . import decorators
-from .forms import FormularioLogin, AparatoForm, ClienteForm, CompraForm
+from .forms import FormularioLogin, AparatoForm, ClienteForm, CompraForm, ClienteVenta, VentaForm
 from django.views.generic import ListView, UpdateView, CreateView, DeleteView, TemplateView
 from .models import Item, Cliente, Compra
+from .api import Carro
 
 
 # Create your views here.
@@ -137,6 +139,19 @@ class CrearCompra(CreateView):
     template_name = 'global/crear_compra.html'
     success_url = reverse_lazy('global:listar_compra')
 
+    def post(self, request, *args, **kwargs):
+        compra_form = CompraForm(request.POST)
+        if compra_form.is_valid():
+            compra_form.save()
+        pk = request.POST["item"]
+        cantidad = request.POST["cantidad"]
+
+        item = Item.objects.get(id=pk)
+        newstock = item.stock + int(cantidad)
+        item.stock = newstock
+        item.save()
+        return redirect('global:listar_compra')
+
 
 @decorators.class_view_decorator(decorators.no_es_admin)
 class ListarCompra(ListView):
@@ -146,8 +161,109 @@ class ListarCompra(ListView):
     queryset = Compra.objects.all()
 
 
-# @decorators.class_view_decorator(decorators.no_es_admin)
-def eliminar_compra(pk=0):
+def CrearVenta(request):
+    if request.method == 'POST':
+        if request.POST["itemid"]:
+            item = request.POST["itemid"]
+            print(item)
+    action = request.GET.get('action')
+    if action is not None:
+        items = Item.objects.filter(nombre__icontains=action)
+        data = []
+        for i in items:
+            data.append(i.toJSON())
+        return JsonResponse(data, safe=False)
+    form2 = ClienteVenta()
+    items = Item.objects.all()
+    info = []
+    for i in items:
+        info.append(i.toJSON())
+    return render(request, 'global/crear_venta.html', {'form2': form2, 'info': info})
+
+
+@csrf_exempt
+def get_clientes(request):
+    global options, response
+    if request.method == 'GET':
+        print("hola")
+        name = request.GET.get('name')
+        clientes = Cliente.objects.none()
+        options = '<option value="" selected="selected">---------</option>'
+        if name:
+            clientes = Cliente.objects.filter(nombre__icontains=name)
+        for cliente in clientes:
+            completo = cliente.nombre + " " + cliente.apellidos
+            options += '<option value="%s">%s</option>' % (
+                cliente.pk,
+                completo
+            )
+        response = {'clientes': options}
+    if request.method == 'POST':
+        ide = request.POST.get('selected')
+        print("aqui")
+        cliente = Cliente.objects.get(id=ide)
+        nombre = cliente.nombre
+        apellidos = cliente.apellidos
+        telefono = cliente.telefono
+        response = {'nombre': nombre, 'apellidos': apellidos, 'telefono': telefono}
+    return JsonResponse(response)
+
+
+def eliminar_compra(request, pk=0):
     compra = Compra.objects.get(id=pk)
     compra.delete()
     return redirect('global:listar_compra')
+
+
+def eliminar_aparato(request, pk=0):
+    aparato = Item.objects.get(id=pk)
+    aparato.delete()
+    return redirect('global:listar_aparato')
+
+
+def eliminar_cliente(request, pk=0):
+    cliente = Cliente.objects.get(id=pk)
+    cliente.delete()
+    return redirect('global:listar_cliente')
+
+
+def agregar_producto(request, pk=0):
+
+    carro=Carro(request)
+
+    producto=Item.objects.get(id=pk)
+
+    carro.agregar(producto=producto)
+
+    return redirect("global:crear_venta")
+
+
+def eliminar_producto(request, producto_id):
+
+    carro=Carro(request)
+
+    producto=Item.objects.get(id=producto_id)
+
+    carro.eliminar(producto=producto)
+
+    return redirect("global:crear_venta")
+
+
+def restar_producto(request, producto_id):
+
+    carro=Carro(request)
+
+    producto=Item.objects.get(id=producto_id)
+
+    carro.restar_producto(producto=producto)
+
+    return redirect("global:crear_venta")
+
+
+def limpiar_carro(request, producto_id):
+
+    carro=Carro(request)
+
+    carro.limpiar_carro()
+
+    return redirect("global:crear_venta")

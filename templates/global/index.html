@@ -115,6 +115,18 @@
                                     <a class="nav-link" href="{% url 'global:crear_compra' %}">Crear compra</a>
                                 </nav>
                             </div> <!--Compras -->
+
+                            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#ventas" aria-expanded="false" aria-controls="collapseLayouts">
+                                <div class="sb-nav-link-icon"><i class="fas fa-tools"></i></div>
+                                Ventas
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="ventas" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="{% url 'global:listar_compra' %}">Lista ventas</a>
+                                    <a class="nav-link" href="{% url 'global:crear_compra' %}">Crear ventas</a>
+                                </nav>
+                            </div> <!--Compras -->
                             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
                                 <div class="sb-nav-link-icon"><i class="fas fa-folder-open"></i></div>
                                 Reportes
@@ -151,7 +163,7 @@
                                 <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
                                 Clientes
                             </a>
-                            <a class="nav-link" href="tables.html">
+                            <a class="nav-link" href="{% url 'global:crear_venta' %}">
                                 <div class="sb-nav-link-icon"><i class="fas fa-file-invoice-dollar"></i></div>
                                 Realizar venta
                             </a>

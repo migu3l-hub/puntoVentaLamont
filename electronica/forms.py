@@ -1,7 +1,7 @@
 from django.contrib.auth.forms import AuthenticationForm
 from django import forms
 from django.contrib.admin.widgets import AdminDateWidget
-from electronica.models import Item, Cliente, Compra
+from electronica.models import Item, Cliente, Compra, Venta
 
 
 class FormularioLogin(
@@ -107,7 +107,7 @@ class AparatoForm(forms.ModelForm):
 class CompraForm(forms.ModelForm):
     class Meta:
         model = Compra
-        fields = ('marca', 'cantidad', 'item')
+        fields = ('marca', 'cantidad', 'item', 'precio')
         label = {
             'marca': 'Marca',
             'cantidad': 'Cantidad comprada',
@@ -121,6 +121,43 @@ class CompraForm(forms.ModelForm):
                 attrs={'class': 'form-control'}
             ),
             'item': forms.Select(
+                attrs={'class': 'form-control'}
+            ),
+            'precio': forms.NumberInput(
+                attrs={'class': 'form-control'}
+            ),
+        }
+
+
+class ClienteVenta(forms.Form):
+    clientes = forms.ModelChoiceField(
+        label=u'Cliente',
+        queryset=Cliente.objects.all()
+    )
+
+    def __init__(self, *args, **kwargs):
+        super(ClienteVenta, self).__init__(*args, **kwargs)
+        self.fields['clientes'].queryset = Cliente.objects.none()
+        self.fields['clientes'].widget.attrs['required'] = False
+
+
+class VentaForm(forms.ModelForm):
+    class Meta:
+        model = Venta
+        fields = ('serie', 'despachador', 'total')
+        label = {
+            'marca': 'Marca',
+            'cantidad': 'Cantidad comprada',
+            'item': 'Producto',
+        }
+        widgets = {
+            'serie': forms.TextInput(
+                attrs={'class': 'form-control'}
+            ),
+            'despachador': forms.TextInput(
+                attrs={'class': 'form-control'}
+            ),
+            'total': forms.Select(
                 attrs={'class': 'form-control'}
             ),
         }

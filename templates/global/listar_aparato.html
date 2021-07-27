@@ -51,12 +51,30 @@ Listado de Aparatos en venta
                                     <td>{{ aparato.precio_venta }}</td>
                                     <td>{{ aparato.stock }}</td>
                                     <td>
-                                        <a href="{% url 'global:eliminar_aparato' aparato.id %}"
-                                           class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></a>
-                                        <a href="{% url 'global:editar_aparato' aparato.id %}" class="btn btn-warning btn-xs">
-                                            <i class="fas fa-edit"></i></a>
+                                        <button id="{{ aparato.id }}" type="button" class="btn btn-danger btn-xs" onclick="eliminar(this.id)"><i class="fa fa-trash"></i></button>
+                                        <a href="{% url 'global:editar_aparato' aparato.id %}" class="btn btn-warning btn-xs"><i class="fas fa-edit"></i></a>
                                     </td>
                                 </tr>
+                                <div id="{{ aparato.id }}a" class="modal" tabindex="-1" role="dialog" >
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Eliminar Compra</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p>Al eliminar la compra el registro se removera, esta accion no se puede deshacer</p>
+                                            <p>¿Desea continuar?</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <a href="{% url 'global:eliminar_aparato' aparato.id %}"><button type="button" class="btn btn-danger">Confirmar</button></a>
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                </div>
                             {% endfor %}
                             </tbody>
                         </table>
@@ -67,6 +85,20 @@ Listado de Aparatos en venta
     </main>
 {% endblock %}
 
+{% block extrajs %}
+
+    <script type="text/javascript">
+        function eliminar(id) {
+        $(document).ready(function () {
+            $('#'+id).ready(function () {
+                $('#'+id+'a').modal('show');//básico
+            });
+        });
+    }
+
+    </script>
+
+{% endblock %}
 
 
 
