@@ -269,10 +269,9 @@ def limpiar_carro(request, producto_id):
     return redirect("global:crear_venta")
 
 # modificando
-def visualizar_producto(request):
-    if request.method == 'GET':
-        producto = Item.objects.get(id='1')
-        return render(request, 'global/visualizar_producto.html', {'id_producto':producto.id, 'tipo_producto':producto.tipo,
+def visualizar_producto(request, pk=0):
+    producto = Item.objects.get(id=pk)
+    return render(request, 'global/visualizar_producto.html', {'id_producto':producto.id, 'tipo_producto':producto.tipo,
                                                                    'nombre_producto': producto.nombre, 'fecha_expiracion': producto.fecha_expiracion,
                                                                    'fecha_produccion': producto.fecha_produccion, 'descripcion_producto': producto.descripcion,
                                                                    'precio_compra': producto.precio_compra, 'precio_venta': producto.precio_venta,

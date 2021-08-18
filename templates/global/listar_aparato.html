@@ -54,7 +54,7 @@ Listado de Aparatos en venta
                                         <button id="{{ aparato.id }}" type="button" class="btn btn-danger btn-xs" onclick="eliminar(this.id)"><i class="fa fa-trash"></i></button>
                                         <!-- se agrego el boton de visualizar -->
                                         <a href="{% url 'global:visualizar' aparato.id %}" class="btn btn-info btn-xs"><i class="fa fa-eye"></i></a>
-                                        <a href="{% url 'global:editar_aparato' aparato.id %}" class="btn btn-warning btn-xs"><i class="fas fa-edit"></i></a>
+                                        <a href="{% url 'global:visualizar' aparato.id %}" class="btn btn-warning btn-xs"><i class="fas fa-edit"></i></a>
                                     </td>
                                 </tr>
                                 <div id="{{ aparato.id }}a" class="modal" tabindex="-1" role="dialog" >
