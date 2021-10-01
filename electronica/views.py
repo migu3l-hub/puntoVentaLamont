@@ -1,4 +1,3 @@
-import tele as tele
 from django.contrib.auth import authenticate, login as do_login, logout as do_logout
 from django.contrib.auth.views import LoginView
 from django.http import JsonResponse

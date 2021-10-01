@@ -156,7 +156,7 @@
                     </div>
                     <div class="sb-sidenav-footer">
                         <div class="small">Sesion iniciada como:</div>
-                        {{ user.first_name | upper }} {{ user.last_name | upper }}
+                        {{ user.first_name | upper }} {{ request.user.last_name | upper }}
                         <div class="small">Hora de inicio:</div>
                         {{ user.last_login }}
                     </div>
