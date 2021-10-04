@@ -1,6 +1,8 @@
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django import forms
 from django.contrib.admin.widgets import AdminDateWidget
+from django.contrib.auth.models import User
+
 from electronica.models import Item, Cliente, Compra, Venta
 
 
@@ -8,13 +10,68 @@ class FormularioLogin(
     AuthenticationForm):  # ESTA SOBREESCRITURA PARA PONER ESTILOS SE PODRIA HACER CON djamgo_widget_tw
     def __init__(self, *args, **kwargs):  # es el metodo que ejecuta toda clase de python lo redifinimos
         super(FormularioLogin, self).__init__(*args, **kwargs)
-        self.fields['username'].widget.attrs['class'] = 'input100'
+        self.fields['username'].widget.attrs['class'] = 'form-control py-4'
         self.fields['username'].widget.attrs['placeholder'] = 'Nombre de usuario'
-        self.fields['username'].widget.attrs['type'] = 'text'
         self.fields['username'].label = 'Nombre de usuario'
-        self.fields['password'].widget.attrs['class'] = 'input100'
+        self.fields['password'].widget.attrs['class'] = 'form-control py-4'
         self.fields['password'].widget.attrs['placeholder'] = 'Contraseña'
         self.fields['password'].label = 'Contraseña'
+
+class RegistroUsuario(UserCreationForm):
+    # first_name = forms.CharField(max_length=140, required=True)
+    # last_name = forms.CharField(max_length=140, required=False)
+    # email = forms.EmailField(required=True)
+
+    class Meta:
+        model = User
+        fields = ('username','email','first_name','last_name','password','password2',)
+        labels = {
+            'username': 'Nombre de usuario',
+            'email': 'Correo electronico',
+            'first_name': 'Nombre real',
+            'last_name': 'Apellidos',
+            'password':'Contraseña',
+            'password2':'Repite la contraseña'
+        }
+
+        widgets = {
+            'username': forms.TextInput(
+                attrs={
+                    'class': 'form-control py-4',
+                    'placeholder': 'Nombre de usuario'
+                }
+            ),
+            'email': forms.TextInput(
+                attrs={
+                    'class': 'form-control py-4',
+                    'placeholder': 'Nombre de usuario'
+                }
+            ),
+            'first_name': forms.TextInput(
+                attrs={
+                    'class': 'form-control py-4',
+                    'placeholder': 'Nombre de usuario'
+                }
+            ),
+            'last_name': forms.TextInput(
+                attrs={
+                    'class': 'form-control py-4',
+                    'placeholder': 'Nombre de usuario'
+                }
+            ),
+            'password': forms.TextInput(
+                attrs={
+                    'class': 'form-control py-4',
+                    'placeholder': 'Nombre de usuario'
+                }
+            ),
+            'password2': forms.TextInput(
+                attrs={
+                    'class': 'form-control py-4',
+                    'placeholder': 'Nombre de usuario'
+                }
+            ),
+        }
 
 
 class ClienteForm(forms.ModelForm):
@@ -22,16 +79,14 @@ class ClienteForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
 
         for form in self.visible_fields():
-            form.field.widget.attrs[
-                'autocomplete'] = 'off'  # Es mas facil con django widget_tweaks ejemplo en crear cliente
+            form.field.widget.attrs['autocomplete'] = 'off'  # Es mas facil con django widget_tweaks
         print(self.fields.keys())
         self.fields['nombre'].widget.attrs[
             'placeholder'] = 'Ingrese el nombre del cliente'  # Ejemplo cambiar algo a un solo campo
 
     class Meta:
         model = Cliente
-        fields = ['nombre', 'apellidos', 'direccion',
-                  'telefono']  # Es el orden en que regresa los keys del diccionario de arriba
+        fields = ['nombre', 'apellidos', 'direccion','telefono']  # Es el orden en que regresa los keys del diccionario
         labels = {
             'nombre': 'Nombre del cliente',
             'apellidos': 'Apellidos del cliente',

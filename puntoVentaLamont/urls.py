@@ -22,5 +22,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('global/', include(('electronica.urls','global'))),
     path('login/', views.Login.as_view(), name='login'),
+    path('registro/', views.Registro.as_view(), name='registro'),
     path('logout/', views.logout, name='logout'),
 ]

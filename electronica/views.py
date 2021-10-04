@@ -1,15 +1,15 @@
-from django.contrib.auth import authenticate, login as do_login, logout as do_logout
-from django.contrib.auth.views import LoginView
+from django.contrib.auth import authenticate, logout as do_logout
+from django.contrib.auth.views import LoginView, LogoutView
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
-from axes.decorators import axes_dispatch
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from . import decorators
-from .forms import FormularioLogin, AparatoForm, ClienteForm, CompraForm, ClienteVenta, VentaForm
+from .forms import FormularioLogin, AparatoForm, ClienteForm, CompraForm, ClienteVenta, RegistroUsuario
 from django.views.generic import ListView, UpdateView, CreateView, DeleteView, TemplateView
 from .models import Item, Cliente, Compra
+from django.contrib.auth.models import User
 from .api import Carro
 
 
@@ -40,15 +40,25 @@ class Login(LoginView):  # PArece que no usa authenticate no se sabe si funciona
     template_name = "login.html"  # Automaticamente si esta bien lo redirecciona a donde diga el settings
     authentication_form = FormularioLogin  # Los errores son tratados en el propio html con form.errors y salen con swee
 
+class Registro(CreateView):
+    model = User
+    form_class = RegistroUsuario
+    template_name = 'register.html'
+    success_url = reverse_lazy('login')
+
+    # def form_valid(self, form):
+    #     form.save()
+    #     return redirect('login')
+
 
 def logout(request):
     do_logout(request)
     return redirect("login")
 
 
-class Inicio(
-    TemplateView):  # Todas las vistas basadas en clases tienen los metodos get_context_data get post y dispatch
+class Inicio(TemplateView):  # las vistas basadas en clases tienen los metodos get_context_data get post y dispatch
     template_name = 'global/index.html'
+
 
 
 @decorators.class_view_decorator(decorators.no_es_admin)
@@ -65,6 +75,7 @@ class ActualizarCliente(UpdateView):
     form_class = ClienteForm
     template_name = 'global/crear_cliente.html'
     success_url = reverse_lazy('global:listar_cliente')
+
 
 
 @decorators.class_view_decorator(decorators.no_es_admin)
@@ -99,7 +110,7 @@ class ListarAparato(ListView):  # MML esta incompleto
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
-    def post(self, request, *args, **kwargs):  # Tambien esta get_context_data que permite añadir cosas al contexto
+    def post(self, request, *args, **kwargs):  # ESTA USANDO POST AUNQUE NO SE REONOCE COMO FUNCION DE LA CLASE
         data = {}
         try:
             action = request.POST['action']
