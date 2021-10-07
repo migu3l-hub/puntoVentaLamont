@@ -44,25 +44,29 @@ class Carro:
         self.request = request
         self.session = request.session
         carro = self.session.get("carro")
+        cliente = self.session.get("cliente")
         if not carro:
             carro = self.session["carro"] = {}
+        if not cliente:
+            cliente = self.session["cliente"] = {}
         # else:
         self.carro = carro
+        self.cliente = cliente
 
     def agregar(self, producto):
         if (str(producto.id) not in self.carro.keys()):
             self.carro[producto.id] = {
                 "producto_id": producto.id,
                 "nombre": producto.nombre,
-                "precio": str(producto.precio_compra),
+                "precio": str(producto.precio_venta),
                 "cantidad": 1,
                 "stock": producto.stock
             }
         else:
-            for key, value in self.carro.items():
+            for key, value in self.carro.items():  # recorre la llave y el valor de la llave en el diccionario
                 if key == str(producto.id):
                     value["cantidad"] = value["cantidad"] + 1
-                    value["precio"] = float(value["precio"]) + producto.precio_compra
+                    value["precio"] = float(value["precio"]) + producto.precio_venta
                     break
         self.guardar_carro()
 
@@ -88,4 +92,25 @@ class Carro:
 
     def limpiar_carro(self):
         self.session["carro"] = {}
+        self.session.modified = True
+
+    def agregar_cliente(self, cliente):
+
+        self.eliminar_cliente()
+
+        self.cliente[cliente.id] = {
+            "cliente_id": cliente.id,
+            "nombre": cliente.nombre,
+            "apellidos": str(cliente.apellidos),
+            "telefono": cliente.telefono
+        }
+
+        self.guardar_cliente()
+
+    def guardar_cliente(self):
+        self.session["cliente"] = self.cliente
+        self.session.modified = True
+
+    def eliminar_cliente(self):
+        self.session["cliente"] = {}
         self.session.modified = True

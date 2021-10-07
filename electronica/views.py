@@ -40,6 +40,7 @@ class Login(LoginView):  # PArece que no usa authenticate no se sabe si funciona
     template_name = "login.html"  # Automaticamente si esta bien lo redirecciona a donde diga el settings
     authentication_form = FormularioLogin  # Los errores son tratados en el propio html con form.errors y salen con swee
 
+
 class Registro(CreateView):
     model = User
     form_class = RegistroUsuario
@@ -60,7 +61,6 @@ class Inicio(TemplateView):  # las vistas basadas en clases tienen los metodos g
     template_name = 'global/index.html'
 
 
-
 @decorators.class_view_decorator(decorators.no_es_admin)
 class ListarCliente(ListView):
     model = Cliente
@@ -75,7 +75,6 @@ class ActualizarCliente(UpdateView):
     form_class = ClienteForm
     template_name = 'global/crear_cliente.html'
     success_url = reverse_lazy('global:listar_cliente')
-
 
 
 @decorators.class_view_decorator(decorators.no_es_admin)
@@ -173,9 +172,7 @@ class ListarCompra(ListView):
 
 def CrearVenta(request):
     if request.method == 'POST':
-        if request.POST["itemid"]:
-            item = request.POST["itemid"]
-            print(item)
+        pass
     action = request.GET.get('action')
     if action is not None:
         items = Item.objects.filter(nombre__icontains=action)
@@ -193,6 +190,7 @@ def CrearVenta(request):
 
 @csrf_exempt
 def get_clientes(request):
+    carro = Carro(request)
     global options, response
     if request.method == 'GET':
         print("hola")
@@ -212,6 +210,7 @@ def get_clientes(request):
         ide = request.POST.get('selected')
         print("aqui")
         cliente = Cliente.objects.get(id=ide)
+        carro.agregar_cliente(cliente=cliente)
         nombre = cliente.nombre
         apellidos = cliente.apellidos
         telefono = cliente.telefono
@@ -238,10 +237,9 @@ def eliminar_cliente(request, pk=0):
 
 
 def agregar_producto(request, pk=0):
+    carro = Carro(request)
 
-    carro=Carro(request)
-
-    producto=Item.objects.get(id=pk)
+    producto = Item.objects.get(id=pk)
 
     carro.agregar(producto=producto)
 
@@ -249,10 +247,9 @@ def agregar_producto(request, pk=0):
 
 
 def eliminar_producto(request, producto_id):
+    carro = Carro(request)
 
-    carro=Carro(request)
-
-    producto=Item.objects.get(id=producto_id)
+    producto = Item.objects.get(id=producto_id)
 
     carro.eliminar(producto=producto)
 
@@ -260,10 +257,9 @@ def eliminar_producto(request, producto_id):
 
 
 def restar_producto(request, producto_id):
+    carro = Carro(request)
 
-    carro=Carro(request)
-
-    producto=Item.objects.get(id=producto_id)
+    producto = Item.objects.get(id=producto_id)
 
     carro.restar_producto(producto=producto)
 
@@ -271,18 +267,19 @@ def restar_producto(request, producto_id):
 
 
 def limpiar_carro(request, producto_id):
-
-    carro=Carro(request)
+    carro = Carro(request)
 
     carro.limpiar_carro()
 
     return redirect("global:crear_venta")
 
+
 # modificando
 def visualizar_producto(request, pk=0):
     producto = Item.objects.get(id=pk)
-    return render(request, 'global/visualizar_producto.html', {'id_producto':producto.id, 'tipo_producto':producto.tipo,
-                                                                   'nombre_producto': producto.nombre, 'fecha_expiracion': producto.fecha_expiracion,
-                                                                   'fecha_produccion': producto.fecha_produccion, 'descripcion_producto': producto.descripcion,
-                                                                   'precio_compra': producto.precio_compra, 'precio_venta': producto.precio_venta,
-                                                                   'stock_prodcuto': producto.stock})
+    return render(request, 'global/visualizar_producto.html',
+                  {'id_producto': producto.id, 'tipo_producto': producto.tipo,
+                   'nombre_producto': producto.nombre, 'fecha_expiracion': producto.fecha_expiracion,
+                   'fecha_produccion': producto.fecha_produccion, 'descripcion_producto': producto.descripcion,
+                   'precio_compra': producto.precio_compra, 'precio_venta': producto.precio_venta,
+                   'stock_prodcuto': producto.stock})
