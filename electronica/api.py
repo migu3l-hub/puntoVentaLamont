@@ -53,10 +53,10 @@ class Carro:
         self.carro = carro
         self.cliente = cliente
 
-    def agregar(self, producto):
+    def agregar(self, producto, cantidad):
         if (str(producto.id) not in self.carro.keys()):
             self.carro[producto.id] = {
-                "producto_id": producto.id,
+                "producto_id": int(producto.id),
                 "nombre": producto.nombre,
                 "precio": str(producto.precio_venta),
                 "cantidad": 1,
@@ -65,8 +65,9 @@ class Carro:
         else:
             for key, value in self.carro.items():  # recorre la llave y el valor de la llave en el diccionario
                 if key == str(producto.id):
-                    value["cantidad"] = value["cantidad"] + 1
-                    value["precio"] = float(value["precio"]) + producto.precio_venta
+                    new_precio = producto.precio_venta * cantidad
+                    value["cantidad"] = value["cantidad"] + cantidad
+                    value["precio"] = float(value["precio"]) + new_precio
                     break
         self.guardar_carro()
 
@@ -96,7 +97,15 @@ class Carro:
 
     def agregar_cliente(self, cliente):
 
-        self.eliminar_cliente()
+        client = self.session["cliente"] = {}
+
+        self.cliente = client
+
+        print("elimino")
+
+        print(self.session["cliente"])
+
+        # self.eliminar_cliente()
 
         self.cliente[cliente.id] = {
             "cliente_id": cliente.id,
@@ -112,5 +121,6 @@ class Carro:
         self.session.modified = True
 
     def eliminar_cliente(self):
+        print("elimino")
         self.session["cliente"] = {}
         self.session.modified = True

@@ -172,10 +172,14 @@ class ListarCompra(ListView):
 
 def CrearVenta(request):
     if request.method == 'POST':
-        pass
+        if request.method["itemid"]:
+            item = request.POST["itemid"]
+            print(item)
     action = request.GET.get('action')
+    print(action)
     if action is not None:
         items = Item.objects.filter(nombre__icontains=action)
+        print(items)
         data = []
         for i in items:
             data.append(i.toJSON())
@@ -183,6 +187,7 @@ def CrearVenta(request):
     form2 = ClienteVenta()
     items = Item.objects.all()
     info = []
+    print("hi")
     for i in items:
         info.append(i.toJSON())
     return render(request, 'global/crear_venta.html', {'form2': form2, 'info': info})
@@ -237,7 +242,13 @@ def eliminar_cliente(request, pk=0):
 
 
 def agregar_producto(request, pk=0):
+
+    cantidad = 0
+
     carro = Carro(request)
+
+    if request.GET.get("cantidad"):
+     cantidad = request.GET.get("cantidad")
 
     producto = Item.objects.get(id=pk)
 
@@ -246,10 +257,10 @@ def agregar_producto(request, pk=0):
     return redirect("global:crear_venta")
 
 
-def eliminar_producto(request, producto_id):
+def eliminar_producto(request, pk=0):
     carro = Carro(request)
 
-    producto = Item.objects.get(id=producto_id)
+    producto = Item.objects.get(id=pk)
 
     carro.eliminar(producto=producto)
 

@@ -6,7 +6,6 @@
 {% endblock titulo %}
 
 {% block body %}
-<form method="POST">
   <main>
         <div class="container-fluid">
             <h1 class="mt-4">Tables</h1>
@@ -35,10 +34,10 @@
                                 <div class="col col-md-1">Cliente</div>
                                 <div class="col col-md-3"><input type="text" name="name" class="form-control" id="name"></div>
                                 <div class="col col-md-1"><button type="button" class="btn btn-primary" data-toggle="modal" id="modal" onclick="getClientes(this.id)">Buscar</button></div>
-                                {% if request.session.cliente.items %}
-                                   {% for key, value in request.session.cliente.items %}
-                                    <div class="col col-md-4" id="nombre_id">Nombre: {{ value.nombre }}</div>
-                                    <div class="col col-md-2" id="tel_id">Telefono: {{ value.telefono }}</div>
+                                {% if request.session.carro.items %}
+                                  {% for key, value in request.session.cliente.items %}
+                                <div class="col col-md-4" id="nombre_id">Nombre: {{ value.nombre }} {{ value.apellidos }}</div>
+                                <div class="col col-md-2" id="tel_id">Telefono: {{ value.telefono }}</div>
                                 {% endfor %}
                                 {% endif %}
                             </div>
@@ -47,13 +46,13 @@
                                 <div class="modal-dialog" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLongTitle">Menu clientes</h5>
+                                            <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
                                         </div>
                                         <div class="modal-body">
-                                            <h6>Seleccionar cliente</h6>
+                                            <h6>Primera palabra</h6>
                                             {{ form2.clientes }}
                                         </div>
                                         <div class="modal-footer">
@@ -65,7 +64,7 @@
                             </div>
                             <div class="row form-group">
                                 <div class="col col-md-1">Producto</div>
-                                <div class="col col-md-3"><input type="text" class="form-control" required id="act" name="itemid"></div>
+                                <div class="col col-md-3"><input type="text" class="form-control" required id="itemid" name="itemid"></div>
                                 <div class="col col-md-1"><button type="button" class="btn btn-primary" onclick="getItems(this.id)" id="moditems">Buscar</button></div>
                             </div>
                             <div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="moditemsa">
@@ -87,6 +86,7 @@
                                                     <th scope="col" style="width: 20%;">Descripcion</th>
                                                     <th scope="col" style="width: 20%;">Stock</th>
                                                     <th scope="col" style="width: 20%;">Cantidad a seleccionar</th>
+                                                    <th scope="col" style="width: 20%;">Elegir</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>
@@ -104,6 +104,8 @@
                                 <th>Producto</th>
                                 <th>Cantidad</th>
                                 <th>Suma</th>
+                                <th>Precio</th>
+                                <th>Opciones</th>
                             </tr>
                             </thead>
                         {% if request.session.carro.items %}
@@ -113,15 +115,42 @@
                                     <td>{{ value.producto_id }}</td>
                                     <td>{{ value.nombre }}</td>
                                     <td>{{ value.cantidad }}</td>
+                                    <td>{{ value.stock }}</td>
                                     <td>{{ value.precio }}</td>
                                     <td>
-                                        <a href="#"
-                                           class="btn btn-primary">Editar</a>
-                                        <a href="#"
+                                        <button type="button" id="{{ value.producto_id }}" class="btn btn-primary" onclick="cantidad(this.id)">Cantidad</button>
+                                        <a href="{% url 'global:eliminar' value.producto_id %}"
                                            class="btn btn-danger">Eliminar</a>
                                     </td>
                                 </tr>
                             </tbody>
+                                <div id="{{ value.producto_id }}b" class="modal" tabindex="-1" role="dialog">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">Por favor introduzca la cantidad</h5>
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                        aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <label>Cantidad</label>
+                                                <label>
+                                                    <input type="text" name="{{ value.producto_id }}c" id="{{ value.producto_id }}c">
+                                                </label>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <a href="">
+                                                    <button type="button" id="{{ value.producto_id }}" class="btn-evaluar" onclick="cambiarCantidad(this.id)">Confirmar</button>
+                                                </a>
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                                                    Cerrar
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             {% endfor %}
                         {% endif %}
                         </table>
@@ -138,7 +167,6 @@
         </div>
     </main>
 
-</form>
 
 {% endblock body %}
 
@@ -195,14 +223,13 @@
                     },
                 });
                 request.done(function(response) {
-                    {#div.innerHTML="";#}
-                    {#div2.innerHTML="";#}
-                    {#div.innerHTML += 'Nombre: ';#}
-                    {#div2.innerHTML += 'Telefono: ';#}
-                    {#div.innerHTML += response.nombre + ' ';#}
-                    {#div.innerHTML += response.apellidos;#}
-                    {#div2.innerHTML += response.telefono;#}
-                    alert("llego al final de get_datos");
+                    div.innerHTML="";
+                    div2.innerHTML="";
+                    div.innerHTML += 'Nombre: ';
+                    div2.innerHTML += 'Telefono: ';
+                    div.innerHTML += response.nombre + ' ';
+                    div.innerHTML += response.apellidos;
+                    div2.innerHTML += response.telefono;
                 });
             } else {
                 alert("por favor escriba algo");
@@ -241,8 +268,8 @@
                             orderable: false,
                             render: function (data, type, row) { //data es el dato que se especifica en la columna y row a los atributos del objeto
                                 //return '<b>hola</b>'; SI NO SE PONE ENTRE COMILLAS SIMPLES NO SIRVE
-                                var buttons = '<input type="number" id="'+ row.id +'" size="5">&nbsp;&nbsp;';
-                                buttons += '<a href="/global/agregar/' + row.id + '/" type="button" class="btn btn-primary btn-xs btn-flat">Elegir</a>';
+                                var buttons = '<input type="number" id="'+ row.id +'" size="5"></input>&nbsp;&nbsp;';
+                                buttons += '<a href="/global/agregar/' + row.id + '/" id="'+ row.id +'" type="button" class="btn btn-primary btn-xs btn-flat">Elegir</a>';
                                 return buttons; //se retorna el html generado arriba, SI NO VA ENTRE COMILLAS SIMPLES no sirve
                                // buttons += '<a href="/erp/category/delete/' + row.id + '/" type="button" class="btn btn-primary btn-xs btn-flat">Elegir</a>';
 
@@ -257,6 +284,35 @@
                         $('#' + id + 'a').modal('show');//básico
                     });
                 });
+            }
+        }
+
+        function cantidad(id) {
+    $(document).ready(function () {
+        $('#'+id).ready(function () {
+            $('#'+id+'b').modal('show');//básico
+        });
+    });
+}
+
+        function cambiarCantidad(id) {
+            const cantidad = $('#'+id+'c').val();
+            if (cantidad) {
+                const request = $.ajax({
+                    type: "GET",
+                    {#url: "{% url 'global:agregar' %}",#}
+                    url: "/global/agregar/"+id+"/",
+                    data: {
+                        "cantidad": cantidad,
+                    },
+                });
+                request.done(function (response) {
+
+                    alert("respuesta");
+
+                });
+            } else {
+                alert("por favor escriba algo");
             }
         }
 
