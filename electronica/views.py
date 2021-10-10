@@ -242,17 +242,16 @@ def eliminar_cliente(request, pk=0):
 
 
 def agregar_producto(request, pk=0):
-
-    cantidad = 0
+    cantidad = 1
 
     carro = Carro(request)
 
     if request.GET.get("cantidad"):
-     cantidad = request.GET.get("cantidad")
+        cantidad = request.GET.get("cantidad")
 
     producto = Item.objects.get(id=pk)
 
-    carro.agregar(producto=producto)
+    carro.agregar(producto=producto, cantidad=cantidad)
 
     return redirect("global:crear_venta")
 

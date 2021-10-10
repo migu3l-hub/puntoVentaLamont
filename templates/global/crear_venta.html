@@ -103,7 +103,6 @@
                                 <th>ID</th>
                                 <th>Producto</th>
                                 <th>Cantidad</th>
-                                <th>Suma</th>
                                 <th>Precio</th>
                                 <th>Opciones</th>
                             </tr>
@@ -115,7 +114,6 @@
                                     <td>{{ value.producto_id }}</td>
                                     <td>{{ value.nombre }}</td>
                                     <td>{{ value.cantidad }}</td>
-                                    <td>{{ value.stock }}</td>
                                     <td>{{ value.precio }}</td>
                                     <td>
                                         <button type="button" id="{{ value.producto_id }}" class="btn btn-primary" onclick="cantidad(this.id)">Cantidad</button>
@@ -141,9 +139,7 @@
                                                 </label>
                                             </div>
                                             <div class="modal-footer">
-                                                <a href="">
-                                                    <button type="button" id="{{ value.producto_id }}" class="btn-evaluar" onclick="cambiarCantidad(this.id)">Confirmar</button>
-                                                </a>
+                                                <button type="button" id="{{ value.producto_id }}" class="btn btn-primary" onclick="cambiarCantidad(this.id)">Confirmar</button>
                                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">
                                                     Cerrar
                                                 </button>
@@ -154,6 +150,9 @@
                             {% endfor %}
                         {% endif %}
                         </table>
+                            <div class="alert alert-primary" role="alert">
+                                Total:
+                            </div>
                         <div class="text-center">
                             <button type="submit" class="btn btn-primary " aria-hidden="true">
                                <i class="fas fa-plus"></i>   Registrar
@@ -309,6 +308,11 @@
                 request.done(function (response) {
 
                     alert("respuesta");
+                    $('#' + id).ready(function () {
+                        $('#' + id + 'b').modal('toggle');
+                    });
+
+                    location.reload();
 
                 });
             } else {

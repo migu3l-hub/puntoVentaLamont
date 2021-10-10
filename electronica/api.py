@@ -65,9 +65,11 @@ class Carro:
         else:
             for key, value in self.carro.items():  # recorre la llave y el valor de la llave en el diccionario
                 if key == str(producto.id):
-                    new_precio = producto.precio_venta * cantidad
-                    value["cantidad"] = value["cantidad"] + cantidad
-                    value["precio"] = float(value["precio"]) + new_precio
+                    print(producto.precio_venta)
+                    print(cantidad)
+                    new_precio = float(producto.precio_venta) * float(cantidad)
+                    value["cantidad"] = value["cantidad"] = int(cantidad)
+                    value["precio"] = new_precio
                     break
         self.guardar_carro()
 
