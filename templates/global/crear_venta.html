@@ -34,12 +34,14 @@
                                 <div class="col col-md-1">Cliente</div>
                                 <div class="col col-md-3"><input type="text" name="name" class="form-control" id="name"></div>
                                 <div class="col col-md-1"><button type="button" class="btn btn-primary" data-toggle="modal" id="modal" onclick="getClientes(this.id)">Buscar</button></div>
-                                {% if request.session.carro.items %}
-                                  {% for key, value in request.session.cliente.items %}
-                                <div class="col col-md-4" id="nombre_id">Nombre: {{ value.nombre }} {{ value.apellidos }}</div>
-                                <div class="col col-md-2" id="tel_id">Telefono: {{ value.telefono }}</div>
-                                {% endfor %}
-                                {% endif %}
+{#                                {% if request.session.carro.items %}#}
+{#                                  {% for key, value in request.session.cliente.items %}#}
+{#                                <div class="col col-md-4" id="nombre_id">Nombre: {{ value.nombre }} {{ value.apellidos }}</div>#}
+{#                                <div class="col col-md-2" id="tel_id">Telefono: {{ value.telefono }}</div>#}
+{#                                {% endfor %}#}
+{#                                {% endif %}#}
+                                <div class="col col-md-4" id="nombre_id">Nombre: {{ nombre }} {{ apellidos }}</div>
+                                <div class="col col-md-2" id="tel_id">Telefono: {{ telefono }}</div>
                             </div>
                             <div class="modal fade" id="modala" tabindex="-1" role="dialog"
                                  aria-labelledby="exampleModalLongTitle" aria-hidden="true">
@@ -52,8 +54,11 @@
                                             </button>
                                         </div>
                                         <div class="modal-body">
-                                            <h6>Primera palabra</h6>
-                                            {{ form2.clientes }}
+                                            <h6>Menu clientes</h6>
+                                            <label for="id_clientes"></label><select name="clientes" required id="id_clientes">
+                                                <option value="" selected>---------</option>
+                                            </select>
+{#                                            {{ form2.clientes }}#}
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -151,13 +156,13 @@
                         {% endif %}
                         </table>
                             <div class="alert alert-primary" role="alert">
-                                Total:
+                                Total: {{ total }} $
                             </div>
                         <div class="text-center">
                             <button type="submit" class="btn btn-primary " aria-hidden="true">
                                <i class="fas fa-plus"></i>   Registrar
                             </button> &nbsp; &nbsp;
-                            <a href="{% url 'global:listar_cliente' %}" class="btn btn-danger"
+                            <a href="{% url 'global:limpiar' %}" class="btn btn-danger"
                                aria-hidden="true"> <i class="fas fa-trash"></i>  Cancelar</a>
                         </div>
                     </form>
@@ -222,13 +227,14 @@
                     },
                 });
                 request.done(function(response) {
-                    div.innerHTML="";
-                    div2.innerHTML="";
-                    div.innerHTML += 'Nombre: ';
-                    div2.innerHTML += 'Telefono: ';
-                    div.innerHTML += response.nombre + ' ';
-                    div.innerHTML += response.apellidos;
-                    div2.innerHTML += response.telefono;
+                    {#div.innerHTML="";#}
+                    {#div2.innerHTML="";#}
+                    {#div.innerHTML += 'Nombre: ';#}
+                    {#div2.innerHTML += 'Telefono: ';#}
+                    {#div.innerHTML += response.nombre + ' ';#}
+                    {#div.innerHTML += response.apellidos;#}
+                    {#div2.innerHTML += response.telefono;#}
+                    location.reload();
                 });
             } else {
                 alert("por favor escriba algo");
@@ -267,7 +273,8 @@
                             orderable: false,
                             render: function (data, type, row) { //data es el dato que se especifica en la columna y row a los atributos del objeto
                                 //return '<b>hola</b>'; SI NO SE PONE ENTRE COMILLAS SIMPLES NO SIRVE
-                                var buttons = '<input type="number" id="'+ row.id +'" size="5"></input>&nbsp;&nbsp;';
+                                {#var buttons = '<input type="number" id="'+ row.id +'" size="5"></input>&nbsp;&nbsp;';#}
+                                var buttons = '';
                                 buttons += '<a href="/global/agregar/' + row.id + '/" id="'+ row.id +'" type="button" class="btn btn-primary btn-xs btn-flat">Elegir</a>';
                                 return buttons; //se retorna el html generado arriba, SI NO VA ENTRE COMILLAS SIMPLES no sirve
                                // buttons += '<a href="/erp/category/delete/' + row.id + '/" type="button" class="btn btn-primary btn-xs btn-flat">Elegir</a>';

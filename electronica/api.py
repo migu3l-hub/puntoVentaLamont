@@ -70,8 +70,20 @@ class Carro:
                     new_precio = float(producto.precio_venta) * float(cantidad)
                     value["cantidad"] = value["cantidad"] = int(cantidad)
                     value["precio"] = new_precio
-                    break
+                    break  # encuentra lo que busca y termina
         self.guardar_carro()
+
+    def get_total(self):
+        total = 0
+        print(type(self.carro.items()))
+        print(self.carro.items())
+        for key, value in self.carro.items():  # recorre la llave y el valor de la llave en el diccionario
+            print(value["producto_id"])
+            print("esto es key", key)
+            # print(value)
+            total = total + float(value["precio"])
+        print(total)
+        return total
 
     def guardar_carro(self):
         self.session["carro"] = self.carro
@@ -117,6 +129,23 @@ class Carro:
         }
 
         self.guardar_cliente()
+
+    def get_cliente(self):
+        context = {}
+        nombre = ""
+        apellidos = ""
+        telefono = ""
+        for key, value in self.cliente.items():  # recorre la llave y el valor de la llave en el diccionario
+            print(value["nombre"])
+            print(value["apellidos"])
+            nombre = value["nombre"]
+            apellidos = value["apellidos"]
+            telefono = value["telefono"]
+            break
+        context["nombre"] = nombre
+        context["apellidos"] = apellidos
+        context["telefono"] = telefono
+        return context
 
     def guardar_cliente(self):
         self.session["cliente"] = self.cliente

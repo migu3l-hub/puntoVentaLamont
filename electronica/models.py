@@ -60,13 +60,21 @@ class Compra(models.Model):
 
 class Venta(models.Model):
     id = models.AutoField(primary_key=True)
-    serie = models.IntegerField(null=False, unique=True)
-    cliente = models.ForeignKey(Cliente, on_delete=models.SET_NULL, null=True)
+    serie = models.IntegerField(null=True, unique=True)
     despachador = models.CharField(max_length=80, null=False, default="", blank=False)
-    items = models.ManyToManyField(Item)
-    total = models.FloatField(null=False, default=0.00, blank=False)
+    item = models.ForeignKey(Item, on_delete=models.CASCADE, null=False, default="")
+    cliente = models.ForeignKey(Cliente, on_delete=models.SET_NULL, null=True)
+    cantidad = models.IntegerField(null=True, default=0, blank=False)
+    total = models.IntegerField(null=True, default=0.00, blank=False)
+    fecha = models.DateTimeField(auto_now=True)
 
 
+# class Relacion(models.Model):
+#     venta = models.ForeignKey(Venta, on_delete=models.CASCADE, null=True)
+#     item = models.ForeignKey(Item, on_delete=models.CASCADE, null=True)
+#     cantidad = models.IntegerField(null=True, default=0, blank=False)
+#     total = models.IntegerField(null=True, default=0.00, blank=False)
+#     cliente = models.ForeignKey(Cliente, on_delete=models.SET_NULL, null=True)
 
     # def preeciototal(self):
     #     precio_total=self.precio_Compra*self.stock

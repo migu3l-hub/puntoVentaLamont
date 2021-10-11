@@ -24,6 +24,6 @@ urlpatterns = [
     path('agregar/<int:pk>/', login_required(agregar_producto, login_url='login'), name='agregar'),
     path('eliminar/<int:pk>/', login_required(eliminar_producto, login_url='login'), name='eliminar'),
     path('restar/<int:pk>/', login_required(restar_producto, login_url='login'), name='restar'),
-    path('limpiar/<int:pk>/', login_required(limpiar_carro, login_url='login'), name='limpiar'),
+    path('limpiar/', login_required(limpiar_carro, login_url='login'), name='limpiar'),
     path('visualizar/<int:pk>', login_required(visualizar_producto, login_url='login'), name='visualizar'),
 ]

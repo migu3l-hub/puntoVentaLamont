@@ -17,6 +17,7 @@ class FormularioLogin(
         self.fields['password'].widget.attrs['placeholder'] = 'Contraseña'
         self.fields['password'].label = 'Contraseña'
 
+
 class RegistroUsuario(UserCreationForm):
     # first_name = forms.CharField(max_length=140, required=True)
     # last_name = forms.CharField(max_length=140, required=False)
@@ -24,14 +25,14 @@ class RegistroUsuario(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ('username','email','first_name','last_name','password','password2',)
+        fields = ('username', 'email', 'first_name', 'last_name', 'password', 'password2',)
         labels = {
             'username': 'Nombre de usuario',
             'email': 'Correo electronico',
             'first_name': 'Nombre real',
             'last_name': 'Apellidos',
-            'password':'Contraseña',
-            'password2':'Repite la contraseña'
+            'password': 'Contraseña',
+            'password2': 'Repite la contraseña'
         }
 
         widgets = {
@@ -86,7 +87,7 @@ class ClienteForm(forms.ModelForm):
 
     class Meta:
         model = Cliente
-        fields = ['nombre', 'apellidos', 'direccion','telefono']  # Es el orden en que regresa los keys del diccionario
+        fields = ['nombre', 'apellidos', 'direccion', 'telefono']  # Es el orden en que regresa los keys del diccionario
         labels = {
             'nombre': 'Nombre del cliente',
             'apellidos': 'Apellidos del cliente',
@@ -199,7 +200,7 @@ class ClienteVenta(forms.Form):
 class VentaForm(forms.ModelForm):
     class Meta:
         model = Venta
-        fields = ('serie', 'despachador', 'total')
+        fields = ('serie', 'despachador')
         label = {
             'marca': 'Marca',
             'cantidad': 'Cantidad comprada',
@@ -210,9 +211,6 @@ class VentaForm(forms.ModelForm):
                 attrs={'class': 'form-control'}
             ),
             'despachador': forms.TextInput(
-                attrs={'class': 'form-control'}
-            ),
-            'total': forms.Select(
                 attrs={'class': 'form-control'}
             ),
         }

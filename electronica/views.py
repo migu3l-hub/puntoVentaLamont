@@ -171,6 +171,7 @@ class ListarCompra(ListView):
 
 
 def CrearVenta(request):
+    carro = Carro(request)
     if request.method == 'POST':
         if request.method["itemid"]:
             item = request.POST["itemid"]
@@ -184,13 +185,12 @@ def CrearVenta(request):
         for i in items:
             data.append(i.toJSON())
         return JsonResponse(data, safe=False)
-    form2 = ClienteVenta()
-    items = Item.objects.all()
-    info = []
-    print("hi")
-    for i in items:
-        info.append(i.toJSON())
-    return render(request, 'global/crear_venta.html', {'form2': form2, 'info': info})
+    # form2 = ClienteVenta()
+    context = carro.get_cliente()
+    total = carro.get_total()
+    context["total"] = total
+    print(context)
+    return render(request, 'global/crear_venta.html', context)
 
 
 @csrf_exempt
@@ -251,7 +251,7 @@ def agregar_producto(request, pk=0):
 
     producto = Item.objects.get(id=pk)
 
-    carro.agregar(producto=producto, cantidad=cantidad)
+    total = carro.agregar(producto=producto, cantidad=cantidad)
 
     return redirect("global:crear_venta")
 
@@ -276,10 +276,12 @@ def restar_producto(request, producto_id):
     return redirect("global:crear_venta")
 
 
-def limpiar_carro(request, producto_id):
+def limpiar_carro(request):
     carro = Carro(request)
 
     carro.limpiar_carro()
+
+    carro.eliminar_cliente()
 
     return redirect("global:crear_venta")
 
