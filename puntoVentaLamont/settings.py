@@ -154,4 +154,5 @@ STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
 AUTHENTICATION_BACKENDS = (
     'axes.backends.AxesBackend',
     'django.contrib.auth.backends.ModelBackend',
+    'electronica.backends.EmailBackend'
 )

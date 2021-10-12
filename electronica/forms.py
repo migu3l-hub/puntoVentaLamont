@@ -1,8 +1,7 @@
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django import forms
-from django.contrib.admin.widgets import AdminDateWidget
 from django.contrib.auth.models import User
-
+from electronica import api
 from electronica.models import Item, Cliente, Compra, Venta
 
 
@@ -17,35 +16,39 @@ class FormularioLogin(
         self.fields['password'].widget.attrs['placeholder'] = 'Contraseña'
         self.fields['password'].label = 'Contraseña'
 
-
 class RegistroUsuario(UserCreationForm):
-    # first_name = forms.CharField(max_length=140, required=True)
-    # last_name = forms.CharField(max_length=140, required=False)
-    # email = forms.EmailField(required=True)
+    # MML verificacion de Contraseña
+    pwd2 = forms.CharField(label='Contraseña de confirmación', widget=forms.PasswordInput(
+        attrs={
+            'class': 'form-control py-4',
+            'placeholder': 'Ingrese de nuevo la contraseña',
+            'id': 'pwd2',
+            'required': 'required',
+        }
+    ))
 
     class Meta:
         model = User
-        fields = ('username', 'email', 'first_name', 'last_name', 'password', 'password2',)
+        fields = ('email','first_name','last_name','password')
         labels = {
             'username': 'Nombre de usuario',
             'email': 'Correo electronico',
             'first_name': 'Nombre real',
             'last_name': 'Apellidos',
-            'password': 'Contraseña',
-            'password2': 'Repite la contraseña'
+            'password':'Contraseña',
         }
 
         widgets = {
-            'username': forms.TextInput(
+            # 'username': forms.TextInput(
+            #     attrs={
+            #         'class': 'form-control py-4',
+            #         'placeholder': 'Nombre de usuario'
+            #     }
+            # ),
+            'email': forms.EmailInput(
                 attrs={
                     'class': 'form-control py-4',
-                    'placeholder': 'Nombre de usuario'
-                }
-            ),
-            'email': forms.TextInput(
-                attrs={
-                    'class': 'form-control py-4',
-                    'placeholder': 'Nombre de usuario'
+                    'placeholder': 'Correo electronico'
                 }
             ),
             'first_name': forms.TextInput(
@@ -57,22 +60,32 @@ class RegistroUsuario(UserCreationForm):
             'last_name': forms.TextInput(
                 attrs={
                     'class': 'form-control py-4',
-                    'placeholder': 'Nombre de usuario'
+                    'placeholder': 'Apellidos'
                 }
             ),
-            'password': forms.TextInput(
+            'password': forms.PasswordInput(
                 attrs={
                     'class': 'form-control py-4',
-                    'placeholder': 'Nombre de usuario'
-                }
-            ),
-            'password2': forms.TextInput(
-                attrs={
-                    'class': 'form-control py-4',
-                    'placeholder': 'Nombre de usuario'
+                    'placeholder': 'Contraseña'
                 }
             ),
         }
+
+    def clean_pwd2(self):  # MML Hacemos la verificacion de si la contraeña coincide
+        pwd1 = self.cleaned_data['password']
+        pwd2 = self.cleaned_data['pwd2']
+        if pwd1 != pwd2:
+            raise forms.ValidationError('Las contraseñas no coinciden')  # Este es el error que esta en forms.error
+        return pwd2
+
+    def save(self, commit=True):
+        user = super().save(commit=False)  # MML se redefine la forma en que se guarda la contraseña
+        print("Estoy en el save")
+        pwd_hash = api.hashear_contrasena(self.cleaned_data['password'])
+        user.password = pwd_hash
+        if commit:
+            user.save()
+        return user
 
 
 class ClienteForm(forms.ModelForm):
