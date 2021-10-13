@@ -1,7 +1,6 @@
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django import forms
 from django.contrib.auth.models import User
-from electronica import api
 from electronica.models import Item, Cliente, Compra, Venta
 
 
@@ -17,75 +16,34 @@ class FormularioLogin(
         self.fields['password'].label = 'Contraseña'
 
 class RegistroUsuario(UserCreationForm):
-    # MML verificacion de Contraseña
-    pwd2 = forms.CharField(label='Contraseña de confirmación', widget=forms.PasswordInput(
-        attrs={
-            'class': 'form-control py-4',
-            'placeholder': 'Ingrese de nuevo la contraseña',
-            'id': 'pwd2',
-            'required': 'required',
-        }
-    ))
+    def __init__(self, *args, **kwargs):  # AQUI SE MODIFICAN LOS CAMPOS POR QUE SON DE LA CLASE USERCREATIONFORM
+        super(RegistroUsuario, self).__init__(*args, **kwargs)
+        self.fields['username'].widget.attrs['class'] = 'form-control py-4'
+        self.fields['username'].widget.attrs['placeholder'] = 'Ingresar nombre de usuario'
+        self.fields['username'].label = 'Nombre de usuario'
+        self.fields['first_name'].widget.attrs['class'] = 'form-control py-4'
+        self.fields['first_name'].widget.attrs['placeholder'] = 'Ingresar nombre real'
+        self.fields['first_name'].label = 'Nombre de persona'
+        self.fields['last_name'].widget.attrs['class'] = 'form-control py-4'
+        self.fields['last_name'].widget.attrs['placeholder'] = 'Apellidos'
+        self.fields['last_name'].label = 'Ingresar apellidos'
+        self.fields['email'].widget.attrs['class'] = 'form-control py-4'
+        self.fields['email'].widget.attrs['placeholder'] = 'Nombre de usuario'
+        self.fields['email'].label = 'Nombre de usuario'
+        self.fields['password1'].widget.attrs['class'] = 'form-control py-4'
+        self.fields['password1'].widget.attrs['placeholder'] = 'Ingresar la contraseña'
+        self.fields['password1'].label = 'Contraseña'
+        self.fields['password2'].widget.attrs['class'] = 'form-control py-4'
+        self.fields['password2'].widget.attrs['placeholder'] = 'Ingresa la misma contraseña'
+        self.fields['password2'].label = 'Contraseña de confirmacion'
+
+    first_name = forms.CharField()
+    last_name = forms.CharField()
+    email = forms.EmailField()
 
     class Meta:
         model = User
-        fields = ('email','first_name','last_name','password')
-        labels = {
-            'username': 'Nombre de usuario',
-            'email': 'Correo electronico',
-            'first_name': 'Nombre real',
-            'last_name': 'Apellidos',
-            'password':'Contraseña',
-        }
-
-        widgets = {
-            # 'username': forms.TextInput(
-            #     attrs={
-            #         'class': 'form-control py-4',
-            #         'placeholder': 'Nombre de usuario'
-            #     }
-            # ),
-            'email': forms.EmailInput(
-                attrs={
-                    'class': 'form-control py-4',
-                    'placeholder': 'Correo electronico'
-                }
-            ),
-            'first_name': forms.TextInput(
-                attrs={
-                    'class': 'form-control py-4',
-                    'placeholder': 'Nombre de usuario'
-                }
-            ),
-            'last_name': forms.TextInput(
-                attrs={
-                    'class': 'form-control py-4',
-                    'placeholder': 'Apellidos'
-                }
-            ),
-            'password': forms.PasswordInput(
-                attrs={
-                    'class': 'form-control py-4',
-                    'placeholder': 'Contraseña'
-                }
-            ),
-        }
-
-    def clean_pwd2(self):  # MML Hacemos la verificacion de si la contraeña coincide
-        pwd1 = self.cleaned_data['password']
-        pwd2 = self.cleaned_data['pwd2']
-        if pwd1 != pwd2:
-            raise forms.ValidationError('Las contraseñas no coinciden')  # Este es el error que esta en forms.error
-        return pwd2
-
-    def save(self, commit=True):
-        user = super().save(commit=False)  # MML se redefine la forma en que se guarda la contraseña
-        print("Estoy en el save")
-        pwd_hash = api.hashear_contrasena(self.cleaned_data['password'])
-        user.password = pwd_hash
-        if commit:
-            user.save()
-        return user
+        fields = ('username','email','first_name','last_name','password1', 'password2')
 
 
 class ClienteForm(forms.ModelForm):

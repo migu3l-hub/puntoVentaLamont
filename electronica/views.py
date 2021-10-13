@@ -47,9 +47,10 @@ class Registro(CreateView):
     template_name = 'register.html'
     success_url = reverse_lazy('login')
 
-    # def form_valid(self, form):
-    #     form.save()
-    #     return redirect('login')
+    def form_invalid(self, form):
+        errores = form.errors
+        context = {"errores":errores, "form": RegistroUsuario}
+        return render(self.request, "register.html", context)
 
 
 def logout(request):
