@@ -16,6 +16,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from electronica import views
+from django.conf import settings
+from django.conf.urls.static import static
 
 
 urlpatterns = [
@@ -25,3 +27,5 @@ urlpatterns = [
     path('registro/', views.Registro.as_view(), name='registro'),
     path('logout/', views.logout, name='logout'),
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

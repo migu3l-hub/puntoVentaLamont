@@ -28,8 +28,8 @@ class RegistroUsuario(UserCreationForm):
         self.fields['last_name'].widget.attrs['placeholder'] = 'Apellidos'
         self.fields['last_name'].label = 'Ingresar apellidos'
         self.fields['email'].widget.attrs['class'] = 'form-control py-4'
-        self.fields['email'].widget.attrs['placeholder'] = 'Nombre de usuario'
-        self.fields['email'].label = 'Nombre de usuario'
+        self.fields['email'].widget.attrs['placeholder'] = 'Ingresar correo'
+        self.fields['email'].label = 'Correo'
         self.fields['password1'].widget.attrs['class'] = 'form-control py-4'
         self.fields['password1'].widget.attrs['placeholder'] = 'Ingresar la contraseña'
         self.fields['password1'].label = 'Contraseña'
@@ -96,7 +96,7 @@ class ClienteForm(forms.ModelForm):
 class AparatoForm(forms.ModelForm):
     class Meta:
         model = Item
-        fields = ('tipo', 'nombre', 'fecha_expiracion', 'fecha_produccion', 'descripcion', 'precio_venta', 'stock')
+        fields = ('tipo', 'nombre', 'fecha_expiracion', 'fecha_produccion', 'descripcion', 'precio_venta','image', 'stock')
         label = {
             'tipo': 'Tipo de aparato',
             'nombre': 'Nombre de aparato',
@@ -104,6 +104,7 @@ class AparatoForm(forms.ModelForm):
             'fecha_produccion': 'Fecha de produccion del aparato',
             'descripcion': 'Descripcion del aparato',
             'precio_venta': 'Precio de venta',
+            'image': 'Imagen',
             'stock': 'Stock en el almacen',
         }
         widgets = {
@@ -128,6 +129,7 @@ class AparatoForm(forms.ModelForm):
             'fecha_produccion': forms.DateInput(
                 attrs={'class': 'form-control', 'type': 'date'}
             ),
+            # 'image': forms.ImageField(),
         }
 
 

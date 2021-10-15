@@ -38,6 +38,7 @@ Listado de Aparatos en venta
                                 <th>Descripcion</th>
                                 <th width="80px">Precio venta</th>
                                 <th width="65px">stock</th>
+                                <th width="65px">Imagen</th>
                                 <th width="100px">Opciones</th>
                             </tr>
                             </thead>
@@ -50,6 +51,7 @@ Listado de Aparatos en venta
                                     <td>{{ aparato.descripcion }}</td>
                                     <td>{{ aparato.precio_venta }}</td>
                                     <td>{{ aparato.stock }}</td>
+                                    <td>{{ aparato.image }}</td>
                                     <td>
                                         <button id="{{ aparato.id }}" type="button" class="btn btn-danger btn-xs" onclick="eliminar(this.id)"><i class="fa fa-trash"></i></button>
                                         <!-- se agrego el boton de visualizar -->

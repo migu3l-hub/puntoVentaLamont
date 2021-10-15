@@ -32,6 +32,7 @@ class Item(models.Model):
     descripcion = models.TextField(max_length=400)
     precio_compra = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     precio_venta = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    image = models.ImageField(upload_to='product/%Y/%m/%d', null=True, blank=True)
     stock = models.PositiveSmallIntegerField(default=0)
 
     def toJSON(self):

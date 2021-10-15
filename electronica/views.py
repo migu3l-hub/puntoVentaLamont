@@ -36,9 +36,10 @@ from .api import Carro
 #         return render(request, "login.html", {"form": FormularioLogin})
 
 
-class Login(LoginView):  # PArece que no usa authenticate no se sabe si funciona con axes REEMPLAZAR CON FORM
+class Login(LoginView):  # Por defecto usa todos los backends
     template_name = "login.html"  # Automaticamente si esta bien lo redirecciona a donde diga el settings
     authentication_form = FormularioLogin  # Los errores son tratados en el propio html con form.errors y salen con swee
+    redirect_authenticated_user = True
 
 
 class Registro(CreateView):
@@ -62,7 +63,6 @@ class Inicio(TemplateView):  # las vistas basadas en clases tienen los metodos g
     template_name = 'global/index.html'
 
 
-@decorators.class_view_decorator(decorators.no_es_admin)
 class ListarCliente(ListView):
     model = Cliente
     template_name = 'global/listar_cliente.html'
@@ -70,7 +70,6 @@ class ListarCliente(ListView):
     queryset = Cliente.objects.all()
 
 
-@decorators.class_view_decorator(decorators.no_es_admin)
 class ActualizarCliente(UpdateView):
     model = Cliente
     form_class = ClienteForm
@@ -78,7 +77,6 @@ class ActualizarCliente(UpdateView):
     success_url = reverse_lazy('global:listar_cliente')
 
 
-@decorators.class_view_decorator(decorators.no_es_admin)
 class CrearCliente(CreateView):
     model = Cliente
     form_class = ClienteForm
@@ -86,13 +84,11 @@ class CrearCliente(CreateView):
     success_url = reverse_lazy('global:listar_cliente')
 
 
-@decorators.class_view_decorator(decorators.no_es_admin)
 class EliminarCliente(DeleteView):
     model = Cliente
     success_url = reverse_lazy('global:listar_cliente')
 
 
-@decorators.class_view_decorator(decorators.no_es_admin)
 class CrearAparato(CreateView):
     model = Item
     form_class = AparatoForm
@@ -128,7 +124,6 @@ class ListarAparato(ListView):  # MML esta incompleto
                             safe=False)  # Se debe poner el safe en false cuando se envia mas de un diccionario para que se serialize
 
 
-@decorators.class_view_decorator(decorators.no_es_admin)
 class ActualizarAparato(UpdateView):
     model = Item
     form_class = AparatoForm
@@ -136,13 +131,11 @@ class ActualizarAparato(UpdateView):
     success_url = reverse_lazy('global:listar_aparato')
 
 
-@decorators.class_view_decorator(decorators.no_es_admin)
 class EliminarAparato(DeleteView):
     model = Item
     success_url = reverse_lazy('global:listar_aparato')
 
 
-@decorators.class_view_decorator(decorators.no_es_admin)
 class CrearCompra(CreateView):
     model = Compra
     form_class = CompraForm
@@ -163,7 +156,7 @@ class CrearCompra(CreateView):
         return redirect('global:listar_compra')
 
 
-@decorators.class_view_decorator(decorators.no_es_admin)
+
 class ListarCompra(ListView):
     model = Compra
     template_name = 'global/listar_compra.html'

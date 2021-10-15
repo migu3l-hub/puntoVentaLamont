@@ -150,9 +150,15 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
 
+# Imagenes
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+
+MEDIA_URL = '/media/'
+
 # Backends de authenticacion
 AUTHENTICATION_BACKENDS = (
     'axes.backends.AxesBackend',
+    'electronica.backends.EmailBackend',
     'django.contrib.auth.backends.ModelBackend',
-    'electronica.backends.EmailBackend'
 )
